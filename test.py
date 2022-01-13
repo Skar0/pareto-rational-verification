@@ -1,6 +1,6 @@
 import unittest
 from verification_algorithms import *
-from benchmark_generator import *
+from generate_benchmark import *
 import random
 
 class TestAlgorithms(unittest.TestCase):

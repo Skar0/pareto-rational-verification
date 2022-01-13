@@ -5,6 +5,7 @@ import spot
 import buddy
 import random
 
+
 def intersection_example(k, negative_instance=False):
     """
     Construct the automaton for the intersection example with the following encoding. We omit to give priorities to
