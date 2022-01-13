@@ -284,7 +284,7 @@ def counter_example_dominated(nbr_objectives, automaton, colors_map, counter_exa
     # acceptance condition should be winning for Player 0
     acc = parity_to_acceptance(colors_map[0])
 
-    first = False
+    first = True
     disj_for_each_payoffs = None
 
     # for each payoff strictly larger than counter_example_payoff by one objective, we want the conjunction of its
