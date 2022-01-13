@@ -112,25 +112,6 @@ def intersection_example(k, negative_instance=False):
 
         index += 22
 
-    '''
-    for s in range(0, aut.num_states()):
-        for t in aut.out(s):
-            t.acc = spot.mark_t([0, 2, 3])
-
-    for s in range(0, aut.num_states()):
-        print("State {}:".format(s))
-        for t in aut.out(s):
-            print("  edge({} -> {})".format(t.src, t.dst))
-            # bdd_print_formula() is designed to print on a std::ostream, and
-            # is inconvenient to use in Python.  Instead we use
-            # bdd_format_formula() as this simply returns a string.
-            print("    label =", spot.bdd_format_formula(bdict, t.cond))
-            print("    acc sets =", t.acc)
-    '''
-
-    print(aut.to_str("dot"))
-
-
     return aut, 4, {0: [0, 1], 1: [2, 3], 2: [4, 5], 3: [6, 7], 4: [8, 9]}
 
 
@@ -152,6 +133,8 @@ def random_automaton(nbr_vertices, density, nbr_objectives):
     total_nbr_objectives = nbr_objectives + 1
     total_nbr_sets = 32
     nbr_priorities_per_objective = total_nbr_sets//total_nbr_objectives
+
+    actual_number = nbr_priorities_per_objective * total_nbr_objectives
     colors_map = {}
 
     current_min = 0
@@ -161,15 +144,24 @@ def random_automaton(nbr_vertices, density, nbr_objectives):
 
     # -H is output in hoa, A is the acceptance condition with the number of sets, Q is the number of vertices, n is the
     # number of automata and 1 is the number of atomic propositions
-    aut = next(spot.automata(SPOT_INSTALL + "bin/randaut -A1 -H -Q+" + str(nbr_vertices) + " -e" +
-                             str(density) + " -n1 1|"))
+    aut = next(spot.automata(SPOT_INSTALL + "bin/randaut -A" + str(actual_number) + " -H -Q" + str(nbr_vertices) +
+                             " -e" + str(density) + " -n1 1|"))
+    # using the actual number of acceptance sets might not be necessary when generating a random aut since they are
+    # replaced.
 
     # each transition in the automaton will have one acceptance set (priority) per priority function
     for s in range(0, aut.num_states()):
+
+        # outgoing transition from s, they should all have the same priority vector (the original arena is state-based)
+        transition_priorities = []
+
+        # for each function, select a random acceptance set (priority) between its min and max set
+        for i in range(total_nbr_objectives):
+            transition_priorities.append(random.randint(min(colors_map[i]), max(colors_map[i])))
+
+        # add the same vector for each transition
         for t in aut.out(s):
-            transition_priorities = []
-            for i in range(total_nbr_objectives):
-                transition_priorities.append(random.randint(min(colors_map[i]), max(colors_map[i])))
             t.acc = spot.mark_t(transition_priorities)
 
     return aut, nbr_objectives, colors_map
+
