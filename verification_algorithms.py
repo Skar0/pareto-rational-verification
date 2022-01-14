@@ -332,6 +332,33 @@ def get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map):
     # retrieve an accepting run for the current acceptance condition
     run = automaton.accepting_run()
 
+    # special case when there is one priority per priority function, in that case there are some transitions with no
+    # priorities for some functions (e.g. a transition has either priority 0 or no priority for the first function and
+    # the condition if Inf(0)). Therefore, the objective is satisfied if 0 is in the list of occurring priorities in
+    # the cycle part of the run.
+
+    """
+    if all(len(map_for_obj) == 1 for map_for_obj in colors_map.values()):
+        
+        # maintain a set of occurring priorities in the cycle part of the run
+        occurring_priorities = set()
+        # for each transition in the cycle part of the run
+        for trans in run.cycle:
+            # for each acceptance set in the transition (of which there might not be one for each objective)
+            for acc_set in trans.acc.sets():
+                # add the acceptance set to the list of occurring priorities
+                occurring_priorities.add(acc_set)
+
+        # payoff is initialized with only zeros
+        payoff = [0] * nbr_objectives
+
+        # for each occurring priority, the corresponding objective is satisfied (we ignore payoff for Player 0)
+        for prio in occurring_priorities:
+            if prio > 0:
+                payoff[prio-1] = 1
+        return tuple(payoff)
+    """
+
     # for each transition in the cycle part of the run
     for trans in run.cycle:
         i = 0
