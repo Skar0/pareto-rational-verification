@@ -3,6 +3,7 @@ from verification_algorithms import *
 from generate_benchmark import *
 import random
 
+
 class TestAlgorithms(unittest.TestCase):
 
     def setUp(self):
@@ -18,6 +19,14 @@ class TestAlgorithms(unittest.TestCase):
             automaton, nbr_objectives, colors_map = intersection_example(size, negative_instance=True)
             self.assertFalse(direct_antichain_algorithm(automaton, nbr_objectives, colors_map, is_payoff_realizable))
 
+        for size in range(1, 7):
+            automaton, nbr_objectives, colors_map = intersection_example_objective_increase(size)
+            self.assertTrue(direct_antichain_algorithm(automaton, nbr_objectives, colors_map, is_payoff_realizable))
+
+        for size in range(1, 7):
+            automaton, nbr_objectives, colors_map = intersection_example_objective_increase(size, negative_instance=True)
+            self.assertFalse(direct_antichain_algorithm(automaton, nbr_objectives, colors_map, is_payoff_realizable))
+
     def test_counter_example(self):
 
         for size in range(1, 100, 10):
@@ -26,6 +35,14 @@ class TestAlgorithms(unittest.TestCase):
 
         for size in range(1, 100, 10):
             automaton, nbr_objectives, colors_map = intersection_example(size, negative_instance=True)
+            self.assertFalse(counter_example_based_algorithm(automaton, nbr_objectives, colors_map))
+
+        for size in range(1, 7):
+            automaton, nbr_objectives, colors_map = intersection_example_objective_increase(size)
+            self.assertTrue(counter_example_based_algorithm(automaton, nbr_objectives, colors_map))
+
+        for size in range(1, 7):
+            automaton, nbr_objectives, colors_map = intersection_example_objective_increase(size, negative_instance=True)
             self.assertFalse(counter_example_based_algorithm(automaton, nbr_objectives, colors_map))
 
     def test_consistency(self):
@@ -44,9 +61,10 @@ class TestAlgorithms(unittest.TestCase):
             result_counter_example = counter_example_based_algorithm(automaton, nbr_objectives, colors_map)
             self.assertEqual(result_direct_antichain, result_counter_example)
 
+        """
         import time
 
-        for size in range(10, 100000, 100):
+        for size in range(10, 100, 1000):
             print("Number of states " + str(size))
 
             automaton, nbr_objectives, colors_map = random_automaton(size, 0.5, 10)
@@ -69,6 +87,7 @@ class TestAlgorithms(unittest.TestCase):
             end = time.time()
             print("Counter example time " + str(end - start))
             self.assertEqual(result_direct_antichain, result_counter_example)
+        """
 
 
 if __name__ == '__main__':
