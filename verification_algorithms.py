@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, "/Users/clement/spot-2.10.2-install/lib/python3.8/site-packages")
+sys.path.insert(0, "/Users/clement/spot-2.10.2-install-fixed/lib/python3.8/site-packages")
 import spot
 
 from collections import deque, defaultdict

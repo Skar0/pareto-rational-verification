@@ -1,5 +1,5 @@
 import sys
-SPOT_INSTALL = "/Users/clement/spot-2.10.2-install/"
+SPOT_INSTALL = "/Users/clement/spot-2.10.2-install-fixed/"
 sys.path.insert(0, SPOT_INSTALL + "lib/python3.8/site-packages")
 import spot
 import buddy
