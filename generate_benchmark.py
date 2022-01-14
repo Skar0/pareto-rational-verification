@@ -4,6 +4,7 @@ sys.path.insert(0, SPOT_INSTALL + "lib/python3.8/site-packages")
 import spot
 import buddy
 import random
+import os
 
 
 def intersection_example(k, negative_instance=False):
@@ -116,6 +117,311 @@ def intersection_example(k, negative_instance=False):
     return aut, 4, {0: [0, 1], 1: [2, 3], 2: [4, 5], 3: [6, 7], 4: [8, 9]}
 
 
+def intersection_example_objective_increase(k, negative_instance=False):
+    """
+    Construct the automaton for the intersection example where the number of objectives is incremented as follows. The
+    automaton consists of k copies of the intersection game, with a new "root" vertex leading to them. In each copy,
+    the two objectives for cars c2 and c2 are unique to that copy. Therefore, overall, the number of objectives of
+    Player 1 is 2 + k * 2 (the first and last objectives of the example are unchanged and there are 2 unique objectives
+    per copy). If in the original intersection example, some vertex v has a loop giving it payoff (0, 1, 0, 1), then if
+    k=2 the payoff for that loop in the first copy is (0, 1, 0, 0, 0, 1) and  (0, 0, 0, 1, 0, 1) in the second. The
+    encoding used is the same as the one used in intersection_example.
+
+    :param k: the number of objectives of Player 1 is 2 + 2 * k and the number of states is 1 + k * 22.
+    :param negative_instance: make the instance of the problem negative by adding a PO payoff losing for Player 0.
+    :return: the constructed automaton without any acceptance condition.
+    """
+
+    bdict = spot.make_bdd_dict()
+    aut = spot.make_twa_graph(bdict)
+    p1 = buddy.bdd_ithvar(aut.register_ap("p"))
+
+    # declare the number of states
+    aut.new_states(1 + 22 * k)
+    # states are labeled from 0, last state is going to be the new root
+    new_root = (22 * k)
+    aut.set_init_state(new_root)
+
+    index = 0
+
+    for i in range(k):
+
+        # the satisfied objectives, properly shifted to create the payoffs
+        omega_0_sat = [0]
+        omega_0_unsat = [1]
+
+        omega_1_sat = [2]
+        omega_1_unsat = [3]
+
+        first_suffix = list(range(5, 5 + 4 * i, 2))
+        zero_zero = [5 + 4 * i, 7 + 4 * i]
+        zero_one = [5 + 4 * i, 6 + 4 * i]
+        one_zero = [4 + 4 * i, 7 + 4 * i]
+
+        second_suffix = list(range(9 + 4 * i, 1 + 4 * (k + 1), 2))
+        omega_4_sat = [4 * (k + 1)]
+        omega_4_unsat = [4 * (k + 1) + 1]
+
+        aut.new_edge(new_root, index, p1, [])
+
+        aut.new_edge(0 + index, 0 + index, p1,
+                     omega_0_unsat + omega_1_unsat + first_suffix + zero_zero + second_suffix + omega_4_unsat)
+
+        #
+        aut.new_edge(0 + index, 1 + index, p1, [])
+        aut.new_edge(1 + index, 1 + index, p1,
+                     omega_0_sat + omega_1_unsat + first_suffix + zero_zero + second_suffix + omega_4_unsat)
+
+        aut.new_edge(1 + index, 2 + index, p1, [])
+        aut.new_edge(2 + index, 2 + index, p1,
+                     omega_0_sat + omega_1_unsat + first_suffix + one_zero + second_suffix + omega_4_unsat)
+
+        aut.new_edge(2 + index, 3 + index, p1, [])
+        aut.new_edge(3 + index, 3 + index, p1,
+                     omega_0_sat + omega_1_sat + first_suffix + one_zero + second_suffix + omega_4_unsat)
+
+        aut.new_edge(1 + index, 4 + index, p1, [])
+        aut.new_edge(4 + index, 4 + index, p1,
+                     omega_0_sat + omega_1_unsat + first_suffix + zero_one + second_suffix + omega_4_unsat)
+
+        aut.new_edge(4 + index, 5 + index, p1, [])
+        aut.new_edge(5 + index, 5 + index, p1,
+                     omega_0_sat + omega_1_sat + first_suffix + zero_one + second_suffix + omega_4_unsat)
+
+        #
+        aut.new_edge(0 + index, 6 + index, p1, [])
+        aut.new_edge(6 + index, 6 + index, p1,
+                     omega_0_unsat + omega_1_unsat + first_suffix + one_zero + second_suffix + omega_4_unsat)
+
+        aut.new_edge(6 + index, 7 + index, p1, [])
+        aut.new_edge(7 + index, 7 + index, p1,
+                     omega_0_sat + omega_1_unsat + first_suffix + one_zero + second_suffix + omega_4_unsat)
+
+        aut.new_edge(7 + index, 8 + index, p1, [])
+        aut.new_edge(8 + index, 8 + index, p1,
+                     omega_0_sat + omega_1_sat + first_suffix + one_zero + second_suffix + omega_4_unsat)
+
+        aut.new_edge(6 + index, 9 + index, p1, [])
+        aut.new_edge(9 + index, 9 + index, p1,
+                     omega_0_unsat + omega_1_unsat + first_suffix + one_zero + second_suffix + omega_4_unsat)
+
+        aut.new_edge(9 + index, 10 + index, p1, [])
+        aut.new_edge(10 + index, 10 + index, p1,
+                     omega_0_sat + omega_1_sat + first_suffix + one_zero + second_suffix + omega_4_unsat)
+
+        #
+        aut.new_edge(0 + index, 11 + index, p1, [])
+        aut.new_edge(11 + index, 11 + index, p1,
+                     omega_0_unsat + omega_1_unsat + first_suffix + zero_one + second_suffix + omega_4_unsat)
+
+        aut.new_edge(11 + index, 12 + index, p1, [])
+        aut.new_edge(12 + index, 12 + index, p1,
+                     omega_0_sat + omega_1_unsat + first_suffix + zero_one + second_suffix + omega_4_unsat)
+
+        aut.new_edge(12 + index, 13 + index, p1, [])
+        aut.new_edge(13 + index, 13 + index, p1,
+                     omega_0_sat + omega_1_sat + first_suffix + zero_one + second_suffix + omega_4_unsat)
+
+        aut.new_edge(11 + index, 14 + index, p1, [])
+        aut.new_edge(14 + index, 14 + index, p1,
+                     omega_0_unsat + omega_1_unsat + first_suffix + zero_one + second_suffix + omega_4_unsat)
+
+        aut.new_edge(14 + index, 15 + index, p1, [])
+        aut.new_edge(15 + index, 15 + index, p1,
+                     omega_0_sat + omega_1_sat + first_suffix + zero_one + second_suffix + omega_4_unsat)
+
+        #
+        aut.new_edge(0 + index, 16 + index, p1, [])
+        aut.new_edge(16 + index, 16 + index, p1,
+                     omega_0_unsat + omega_1_unsat + first_suffix + zero_zero + second_suffix + omega_4_sat)
+
+        aut.new_edge(16 + index, 17 + index, p1, [])
+        aut.new_edge(17 + index, 17 + index, p1,
+                     omega_0_unsat + omega_1_sat + first_suffix + zero_zero + second_suffix + omega_4_sat)
+
+        #
+        aut.new_edge(0 + index, 18 + index, p1, [])
+        aut.new_edge(18 + index, 18 + index, p1,
+                     omega_0_sat + omega_1_unsat + first_suffix + zero_one + second_suffix + omega_4_sat)
+
+        aut.new_edge(18 + index, 19 + index, p1, [])
+        if negative_instance:
+            aut.new_edge(19 + index, 19 + index, p1,
+                         omega_0_unsat + omega_1_sat + first_suffix + zero_one + second_suffix + omega_4_sat)
+        else:
+            aut.new_edge(19 + index, 19 + index, p1,
+                         omega_0_sat + omega_1_sat + first_suffix + zero_one + second_suffix + omega_4_sat)
+
+        #
+        aut.new_edge(0 + index, 20 + index, p1, [])
+        aut.new_edge(20 + index, 20 + index, p1,
+                     omega_0_unsat + omega_1_unsat + first_suffix + zero_zero + second_suffix + omega_4_sat)
+
+        aut.new_edge(20 + index, 21 + index, p1, [])
+        aut.new_edge(21 + index, 21 + index, p1,
+                     omega_0_unsat + omega_1_unsat + first_suffix + zero_zero + second_suffix + omega_4_sat)
+
+        index += 22
+
+    colors_map = {}
+
+    for i in range(3 + 2 * k):
+        colors_map[i] = [i * 2, i * 2 + 1]
+
+    return aut, 2 + 2 * k, colors_map
+
+
+def intersection_example_objective_increase_special_encoding(k, negative_instance=False):
+    """
+    Same as intersection_example_objective_increase but we only use one priority per priority function (which allows
+    to generate a larger maximal number of priorities). In order for the example-based algorithm to work, some code
+    should be uncommented in get_payoff_of_accepting_run.
+
+    :param k: the number of objectives of Player 1 is 2 + 2 * k and the number of states is 1 + k * 22.
+    :param negative_instance: make the instance of the problem negative by adding a PO payoff losing for Player 0.
+    :return: the constructed automaton without any acceptance condition.
+    """
+
+    bdict = spot.make_bdd_dict()
+    aut = spot.make_twa_graph(bdict)
+    p1 = buddy.bdd_ithvar(aut.register_ap("p"))
+
+    # declare the number of states
+    aut.new_states(1 + 22 * k)
+    # states are labeled from 0, last state is going to be the new root
+    new_root = (22 * k)
+    aut.set_init_state(new_root)
+
+    index = 0
+
+    for i in range(k):
+
+        omega_0_sat = [0]
+        omega_0_unsat = []
+
+        omega_1_sat = [1]
+        omega_1_unsat = []
+
+        first_suffix = []
+        zero_zero = []
+        zero_one = [3 + 2 * i]
+        one_zero = [2 + 2 * i]
+
+        second_suffix = []
+        omega_4_sat = [2 * (k + 1)]
+        omega_4_unsat = []
+
+
+        aut.new_edge(new_root, index, p1, [])
+
+        aut.new_edge(0 + index, 0 + index, p1,
+                     omega_0_unsat + omega_1_unsat + first_suffix + zero_zero + second_suffix + omega_4_unsat)
+
+        #
+        aut.new_edge(0 + index, 1 + index, p1, [])
+        aut.new_edge(1 + index, 1 + index, p1,
+                     omega_0_sat + omega_1_unsat + first_suffix + zero_zero + second_suffix + omega_4_unsat)
+
+        aut.new_edge(1 + index, 2 + index, p1, [])
+        aut.new_edge(2 + index, 2 + index, p1,
+                     omega_0_sat + omega_1_unsat + first_suffix + one_zero + second_suffix + omega_4_unsat)
+
+        aut.new_edge(2 + index, 3 + index, p1, [])
+        aut.new_edge(3 + index, 3 + index, p1,
+                     omega_0_sat + omega_1_sat + first_suffix + one_zero + second_suffix + omega_4_unsat)
+
+        aut.new_edge(1 + index, 4 + index, p1, [])
+        aut.new_edge(4 + index, 4 + index, p1,
+                     omega_0_sat + omega_1_unsat + first_suffix + zero_one + second_suffix + omega_4_unsat)
+
+        aut.new_edge(4 + index, 5 + index, p1, [])
+        aut.new_edge(5 + index, 5 + index, p1,
+                     omega_0_sat + omega_1_sat + first_suffix + zero_one + second_suffix + omega_4_unsat)
+
+        #
+        aut.new_edge(0 + index, 6 + index, p1, [])
+        aut.new_edge(6 + index, 6 + index, p1,
+                     omega_0_unsat + omega_1_unsat + first_suffix + one_zero + second_suffix + omega_4_unsat)
+
+        aut.new_edge(6 + index, 7 + index, p1, [])
+        aut.new_edge(7 + index, 7 + index, p1,
+                     omega_0_sat + omega_1_unsat + first_suffix + one_zero + second_suffix + omega_4_unsat)
+
+        aut.new_edge(7 + index, 8 + index, p1, [])
+        aut.new_edge(8 + index, 8 + index, p1,
+                     omega_0_sat + omega_1_sat + first_suffix + one_zero + second_suffix + omega_4_unsat)
+
+        aut.new_edge(6 + index, 9 + index, p1, [])
+        aut.new_edge(9 + index, 9 + index, p1,
+                     omega_0_unsat + omega_1_unsat + first_suffix + one_zero + second_suffix + omega_4_unsat)
+
+        aut.new_edge(9 + index, 10 + index, p1, [])
+        aut.new_edge(10 + index, 10 + index, p1,
+                     omega_0_sat + omega_1_sat + first_suffix + one_zero + second_suffix + omega_4_unsat)
+
+        #
+        aut.new_edge(0 + index, 11 + index, p1, [])
+        aut.new_edge(11 + index, 11 + index, p1,
+                     omega_0_unsat + omega_1_unsat + first_suffix + zero_one + second_suffix + omega_4_unsat)
+
+        aut.new_edge(11 + index, 12 + index, p1, [])
+        aut.new_edge(12 + index, 12 + index, p1,
+                     omega_0_sat + omega_1_unsat + first_suffix + zero_one + second_suffix + omega_4_unsat)
+
+        aut.new_edge(12 + index, 13 + index, p1, [])
+        aut.new_edge(13 + index, 13 + index, p1,
+                     omega_0_sat + omega_1_sat + first_suffix + zero_one + second_suffix + omega_4_unsat)
+
+        aut.new_edge(11 + index, 14 + index, p1, [])
+        aut.new_edge(14 + index, 14 + index, p1,
+                     omega_0_unsat + omega_1_unsat + first_suffix + zero_one + second_suffix + omega_4_unsat)
+
+        aut.new_edge(14 + index, 15 + index, p1, [])
+        aut.new_edge(15 + index, 15 + index, p1,
+                     omega_0_sat + omega_1_sat + first_suffix + zero_one + second_suffix + omega_4_unsat)
+
+        #
+        aut.new_edge(0 + index, 16 + index, p1, [])
+        aut.new_edge(16 + index, 16 + index, p1,
+                     omega_0_unsat + omega_1_unsat + first_suffix + zero_zero + second_suffix + omega_4_sat)
+
+        aut.new_edge(16 + index, 17 + index, p1, [])
+        aut.new_edge(17 + index, 17 + index, p1,
+                     omega_0_unsat + omega_1_sat + first_suffix + zero_zero + second_suffix + omega_4_sat)
+
+        #
+        aut.new_edge(0 + index, 18 + index, p1, [])
+        aut.new_edge(18 + index, 18 + index, p1,
+                     omega_0_sat + omega_1_unsat + first_suffix + zero_one + second_suffix + omega_4_sat)
+
+        aut.new_edge(18 + index, 19 + index, p1, [])
+        if negative_instance:
+            aut.new_edge(19 + index, 19 + index, p1,
+                         omega_0_unsat + omega_1_sat + first_suffix + zero_one + second_suffix + omega_4_sat)
+        else:
+            aut.new_edge(19 + index, 19 + index, p1,
+                         omega_0_sat + omega_1_sat + first_suffix + zero_one + second_suffix + omega_4_sat)
+
+        #
+        aut.new_edge(0 + index, 20 + index, p1, [])
+        aut.new_edge(20 + index, 20 + index, p1,
+                     omega_0_unsat + omega_1_unsat + first_suffix + zero_zero + second_suffix + omega_4_sat)
+
+        aut.new_edge(20 + index, 21 + index, p1, [])
+        aut.new_edge(21 + index, 21 + index, p1,
+                     omega_0_unsat + omega_1_unsat + first_suffix + zero_zero + second_suffix + omega_4_sat)
+
+        index += 22
+
+    colors_map = {}
+
+    # one single priority per function
+    for i in range(3 + 2 * k):
+        colors_map[i] = [i]
+
+    return aut, 2 + 2 * k, colors_map
+
+
 def random_automaton(nbr_vertices, density, nbr_objectives):
     """
     Construct a random generalized parity automaton with the following encoding. We use one acceptance set per priority
@@ -143,6 +449,14 @@ def random_automaton(nbr_vertices, density, nbr_objectives):
         colors_map[i] = list(range(current_min, current_min + nbr_priorities_per_objective))
         current_min += nbr_priorities_per_objective
 
+    file_path = "random_automata/random-" + str(nbr_vertices) + "-" + str(density) + "-" + str(nbr_objectives) + ".hoa"
+    # if the automaton has already been generated
+    if os.path.isfile(file_path):
+        aut = None
+        for a in spot.automata(file_path):
+            aut = a
+        return aut, nbr_objectives, colors_map
+
     # -H is output in hoa, A is the acceptance condition with the number of sets, Q is the number of vertices, n is the
     # number of automata and 1 is the number of atomic propositions
     aut = next(spot.automata(SPOT_INSTALL + "bin/randaut -A" + str(actual_number) + " -H -Q" + str(nbr_vertices) +
@@ -163,6 +477,9 @@ def random_automaton(nbr_vertices, density, nbr_objectives):
         # add the same vector for each transition
         for t in aut.out(s):
             t.acc = spot.mark_t(transition_priorities)
+
+    # if the automaton is newly generated, save it
+    aut.save(file_path)
 
     return aut, nbr_objectives, colors_map
 
