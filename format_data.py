@@ -13,7 +13,9 @@ data_files = ["intersection_increase_vertices-positive-direct_antichain.txt",
               "random-direct_antichain-1000-0.2.txt",
               "random-counter_example-1000-0.2.txt",
               "random-direct_antichain-10000-0.2.txt",
-              "random-counter_example-10000-0.2.txt"]
+              "random-counter_example-10000-0.2.txt",
+              "random-direct_antichain-100-0.2-positive.txt",
+              "random-counter_example-100-0.2-positive.txt"]
 
 for file_name in data_files:
     with open(file_name) as f:
