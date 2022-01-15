@@ -1,3 +1,5 @@
+# This file should be run a first time in order for the random automata to be generated in the folder random_automata
+
 # Benchmark direct_antichain algorithm when increasing nbr of vertices in the intersection example (positive instance)
 for i in {1..10000..500}
 do
@@ -114,4 +116,20 @@ for i in {2..29}
 do
   {echo -n $i " "} >> "random-counter_example-10000-0.2.txt"
   {time python3 run_benchmark.py "Streett" "counter_example" "random" "True" 10000 0.2 $i;} 2>> "random-counter_example-10000-0.2.txt"
+done
+
+
+
+
+# Benchmark direct_antichain algorithm when increasing nbr of objectives in a random automaton 100 vertices 0.2 density for a positive isntance
+for i in {2..29}
+do
+  {echo -n $i " "} >> "random-direct_antichain-100-0.2-positive.txt"
+  {time python3 run_benchmark.py "Streett" "direct_antichain" "random_positive" "True" 100 0.2 $i;} 2>> "random-direct_antichain-100-0.2-positive.txt"
+done
+# Benchmark counter_example algorithm when increasing nbr of objectives in a random automaton 100 vertices 0.2 density for a positive instance
+for i in {2..29}
+do
+  {echo -n $i " "} >> "random-counter_example-100-0.2-positive.txt"
+  {time python3 run_benchmark.py "Streett" "counter_example" "random_positive" "True" 100 0.2 $i;} 2>> "random-counter_example-100-0.2-positive.txt"
 done

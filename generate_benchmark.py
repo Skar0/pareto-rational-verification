@@ -6,6 +6,7 @@ import buddy
 import random
 import os
 
+from verification_algorithms import direct_antichain_algorithm, is_payoff_realizable
 
 def intersection_example(k, negative_instance=False):
     """
@@ -477,6 +478,77 @@ def random_automaton(nbr_vertices, density, nbr_objectives):
         # add the same vector for each transition
         for t in aut.out(s):
             t.acc = spot.mark_t(transition_priorities)
+
+    # if the automaton is newly generated, save it
+    aut.save(file_path)
+
+    return aut, nbr_objectives, colors_map
+
+
+def random_automaton_positive_instances(nbr_vertices, density, nbr_objectives):
+    """
+    Same as random_automaton but only yields positive instances of the problem.
+
+    :param nbr_vertices: number of vertices in the generated automaton.
+    :param density: between 0 (single outgoing edge) and 1 (fully connected graph).
+    :param nbr_objectives: number of objectives for Player 1 (max is 15).
+    :return: the constructed automaton.
+    """
+    total_nbr_objectives = nbr_objectives + 1
+    total_nbr_sets = 32
+    nbr_priorities_per_objective = total_nbr_sets//total_nbr_objectives
+
+    actual_number = nbr_priorities_per_objective * total_nbr_objectives
+    colors_map = {}
+
+    current_min = 0
+    for i in range(total_nbr_objectives):
+        colors_map[i] = list(range(current_min, current_min + nbr_priorities_per_objective))
+        current_min += nbr_priorities_per_objective
+
+    file_path = "random_automata/random-" + str(nbr_vertices) + "-" + str(density) + "-" + str(nbr_objectives) + \
+                "-positive.hoa"
+    # if the automaton has already been generated
+    if os.path.isfile(file_path):
+        aut = None
+        for a in spot.automata(file_path):
+            aut = a
+        return aut, nbr_objectives, colors_map
+
+    found = False
+    aut = None
+
+    while not found:
+        # -H is output in hoa, A is the acceptance condition with the number of sets, Q is the number of vertices, n is the
+        # number of automata and 1 is the number of atomic propositions
+        aut = next(spot.automata(SPOT_INSTALL + "bin/randaut -A" + str(actual_number) + " -H -Q" + str(nbr_vertices) +
+                                 " -e" + str(density) + " -n1 1|"))
+        # using the actual number of acceptance sets might not be necessary when generating a random aut since they are
+        # replaced.
+
+        # each transition in the automaton will have one acceptance set (priority) per priority function
+        for s in range(0, aut.num_states()):
+
+            # outgoing transition from s, they should all have the same priority vector (the original arena is state-based)
+            transition_priorities = []
+
+            # min even priority will appear more often to satisfy objective of Player 0 more often
+            test = random.random()
+            if test <= 0.2:
+                transition_priorities.append(random.randint(min(colors_map[0]), max(colors_map[0])))
+            else:
+                transition_priorities.append(min(colors_map[0]))
+
+
+            # for each function, select a random acceptance set (priority) between its min and max set
+            for i in range(1, total_nbr_objectives):
+                transition_priorities.append(random.randint(min(colors_map[i]), max(colors_map[i])))
+
+            # add the same vector for each transition
+            for t in aut.out(s):
+                t.acc = spot.mark_t(transition_priorities)
+
+        found = direct_antichain_algorithm(aut, nbr_objectives, colors_map, is_payoff_realizable)
 
     # if the automaton is newly generated, save it
     aut.save(file_path)
