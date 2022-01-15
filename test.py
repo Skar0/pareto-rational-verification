@@ -61,34 +61,40 @@ class TestAlgorithms(unittest.TestCase):
             result_counter_example = counter_example_based_algorithm(automaton, nbr_objectives, colors_map)
             self.assertEqual(result_direct_antichain, result_counter_example)
 
-        """
-        import time
+        for nbr_obj in range(2, 30):
 
-        for size in range(10, 100, 1000):
-            print("Number of states " + str(size))
+            automaton, nbr_objectives, colors_map = random_automaton(100, 0.2, nbr_obj)
 
-            automaton, nbr_objectives, colors_map = random_automaton(size, 0.5, 10)
-
-            print(colors_map)
-
-            start = time.time()
             result_direct_antichain = direct_antichain_algorithm(automaton, nbr_objectives, colors_map,
                                                                  is_payoff_realizable)
-            print(result_direct_antichain)
 
-            end = time.time()
-            print("Direct antichain time " + str(end - start))
+            automaton, nbr_objectives, colors_map = random_automaton(100, 0.2, nbr_obj)
 
-            start = time.time()
             result_counter_example = counter_example_based_algorithm(automaton, nbr_objectives, colors_map)
 
-            print(result_counter_example)
-
-            end = time.time()
-            print("Counter example time " + str(end - start))
             self.assertEqual(result_direct_antichain, result_counter_example)
-        """
 
+            automaton, nbr_objectives, colors_map = random_automaton(1000, 0.2, nbr_obj)
+
+            result_direct_antichain = direct_antichain_algorithm(automaton, nbr_objectives, colors_map,
+                                                                 is_payoff_realizable)
+
+            automaton, nbr_objectives, colors_map = random_automaton(1000, 0.2, nbr_obj)
+
+            result_counter_example = counter_example_based_algorithm(automaton, nbr_objectives, colors_map)
+
+            self.assertEqual(result_direct_antichain, result_counter_example)
+
+            automaton, nbr_objectives, colors_map = random_automaton(10000, 0.2, nbr_obj)
+
+            result_direct_antichain = direct_antichain_algorithm(automaton, nbr_objectives, colors_map,
+                                                                 is_payoff_realizable)
+
+            automaton, nbr_objectives, colors_map = random_automaton(10000, 0.2, nbr_obj)
+
+            result_counter_example = counter_example_based_algorithm(automaton, nbr_objectives, colors_map)
+
+            self.assertEqual(result_direct_antichain, result_counter_example)
 
 if __name__ == '__main__':
     unittest.main()
