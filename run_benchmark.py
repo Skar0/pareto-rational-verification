@@ -8,7 +8,7 @@ if __name__ == "__main__":
     algorithm = sys.argv[2]
     benchmark = sys.argv[3]
     negative_instance = eval(sys.argv[4])
-    parameters = [int(i) for i in sys.argv[5:]]
+    parameters = sys.argv[5:]
 
     if encoding == "Streett":
 
@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
             if benchmark == "intersection_increase_vertices":
 
-                nbr_copies = parameters[0]
+                nbr_copies = int(parameters[0])
 
                 if not negative_instance:
                     automaton, nbr_objectives, colors_map = intersection_example(nbr_copies)
@@ -28,7 +28,7 @@ if __name__ == "__main__":
             elif benchmark == "intersection_increase_objectives":
 
                 # number of objectives is 2 + 2 * nbr_copies
-                nbr_copies = parameters[0]
+                nbr_copies = int(parameters[0])
 
                 if not negative_instance:
                     automaton, nbr_objectives, colors_map = intersection_example_objective_increase(nbr_copies)
@@ -39,9 +39,9 @@ if __name__ == "__main__":
 
             elif benchmark == "random":
 
-                nbr_vertices = parameters[0]
-                density = parameters[1]
-                nbr_objectives = parameters[2]
+                nbr_vertices = int(parameters[0])
+                density = float(parameters[1])
+                nbr_objectives = int(parameters[2])
 
                 automaton, nbr_objectives, colors_map = random_automaton(nbr_vertices, density, nbr_objectives)
 
@@ -49,9 +49,9 @@ if __name__ == "__main__":
 
             elif benchmark == "random_positive":
 
-                nbr_vertices = parameters[0]
-                density = parameters[1]
-                nbr_objectives = parameters[2]
+                nbr_vertices = int(parameters[0])
+                density = float(parameters[1])
+                nbr_objectives = int(parameters[2])
 
                 automaton, nbr_objectives, colors_map = random_automaton_positive_instances(nbr_vertices, density,
                                                                                             nbr_objectives)
@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
             if benchmark == "intersection_increase_vertices":
 
-                nbr_copies = parameters[0]
+                nbr_copies = int(parameters[0])
 
                 if not negative_instance:
                     automaton, nbr_objectives, colors_map = intersection_example(nbr_copies)
@@ -74,7 +74,7 @@ if __name__ == "__main__":
             elif benchmark == "intersection_increase_objectives":
 
                 # number of objectives is 2 + 2 * nbr_copies
-                nbr_copies = parameters[0]
+                nbr_copies = int(parameters[0])
 
                 if not negative_instance:
                     automaton, nbr_objectives, colors_map = intersection_example_objective_increase(nbr_copies)
@@ -85,9 +85,9 @@ if __name__ == "__main__":
 
             elif benchmark == "random":
 
-                nbr_vertices = parameters[0]
-                density = parameters[1]
-                nbr_objectives = parameters[2]
+                nbr_vertices = int(parameters[0])
+                density = float(parameters[1])
+                nbr_objectives = int(parameters[2])
 
                 automaton, nbr_objectives, colors_map = random_automaton(nbr_vertices, density, nbr_objectives)
 
@@ -95,9 +95,9 @@ if __name__ == "__main__":
 
             elif benchmark == "random_positive":
 
-                nbr_vertices = parameters[0]
-                density = parameters[1]
-                nbr_objectives = parameters[2]
+                nbr_vertices = int(parameters[0])
+                density = float(parameters[1])
+                nbr_objectives = int(parameters[2])
 
                 automaton, nbr_objectives, colors_map = random_automaton_positive_instances(nbr_vertices, density, nbr_objectives)
 
