@@ -168,6 +168,46 @@ def direct_antichain_algorithm(automaton, nbr_objectives, colors_map, realizable
     return True
 
 
+def compute_antichain(automaton, nbr_objectives, colors_map, realizable):
+    """
+    Computes and returns the antichain of realizable payoffs in the automaton.
+    :param automaton: the automaton.
+    :param nbr_objectives: the number t of objectives of Player 1.
+    :param colors_map: maps each parity objective to the set of SPOT acceptance sets used to represent its priorities.
+    :param realizable: function which decides if a (extended) payoff is realizable.
+    :return: the antichain of realizable payoffs in the automaton.
+    """
+    maximal_payoff = tuple([1] * nbr_objectives)
+
+    pareto_optimal_payoffs = []
+
+    queue = deque()
+    queue.append(maximal_payoff)
+
+    visited = defaultdict(int)
+
+    while queue:
+
+        p = queue.popleft()
+
+        if not any(smaller_than(p, p_prime) for p_prime in pareto_optimal_payoffs):
+
+            if realizable(p, automaton, colors_map):
+                pareto_optimal_payoffs.append(p)
+
+            else:
+
+                for p_star in generate_smaller_payoffs(p):
+
+                    if (not any(smaller_than(p_star, p_prime) for p_prime in pareto_optimal_payoffs)) and \
+                            not visited[p_star]:
+
+                        queue.append(p_star)
+                        visited[p_star] = 1
+
+    return pareto_optimal_payoffs
+
+
 def conjunction_of_satisfied_objectives_in_p(nbr_objectives, p, colors_map):
     """
     Create the conjunction of acceptance codes for each objective satisfied in the payoff p.
