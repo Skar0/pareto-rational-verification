@@ -6,7 +6,7 @@ import buddy
 import random
 import os
 
-from verification_algorithms import direct_antichain_algorithm, is_payoff_realizable, compute_antichain
+from verification_algorithms import direct_antichain_algorithm, is_payoff_realizable, compute_antichain, direct_antichain_algorithm2, counter_example_based_algorithm2
 
 
 def intersection_example(k, negative_instance=False):
@@ -784,3 +784,118 @@ def random_automaton_complex_antichain_64(nbr_vertices, density, nbr_objectives)
     aut.save(file_path)
 
     return aut, nbr_objectives, colors_map
+
+
+
+def random_automaton_complex_antichain_64_pos_neg(nbr_vertices, density, nbr_objectives, prob, positivity, name):
+    """
+    Same as random_automaton but the antichain of realizable payoffs in the automaton must contain at least
+    nbr_objectives/2 elements (to avoid random automata where this antichain only contains (1, ..., 1)).
+
+    :param nbr_vertices: number of vertices in the generated automaton.
+    :param density: between 0 (single outgoing edge) and 1 (fully connected graph).
+    :param nbr_objectives: number of objectives for Player 1 (max is 15).
+    :param prob: the probability of even priorities (used to control the size of the antichain of realizable payoffs).
+    :param positivity: whether we want a positive or negative instance of the problem
+    :param name: since we generate several automata with the same parameters we append a name to it.
+    :return: the constructed automaton.
+    """
+
+    total_nbr_objectives = nbr_objectives + 1
+    nbr_priorities_per_objective = 4
+
+    actual_number = nbr_priorities_per_objective * total_nbr_objectives
+    colors_map = {}
+
+    current_min = 0
+    for i in range(total_nbr_objectives):
+        colors_map[i] = list(range(current_min, current_min + nbr_priorities_per_objective))
+        current_min += nbr_priorities_per_objective
+
+    file_path = "random_automata_complex_64/random-" + str(nbr_vertices) + "-" + str(density) + "-" +\
+                str(nbr_objectives) + "-complex64-" + str(positivity) + "-" + name + ".hoa"
+
+    # if the automaton has already been generated
+    if os.path.isfile(file_path):
+        aut = None
+        for a in spot.automata(file_path):
+            aut = a
+        return aut, nbr_objectives, colors_map
+
+    antichain = []
+    aut = None
+    instance_positivity = not positivity
+
+    while len(antichain) <= nbr_objectives - 1 and instance_positivity != positivity:
+        # use a seed for randaut
+        seed = random.randint(1, 9223372036854775807)
+        # -H is output in hoa, A is the acceptance condition with the number of sets, Q is the number of vertices,
+        # n is the number of automata and 1 is the number of atomic propositions
+        #aut = next(spot.automata(SPOT_INSTALL + "bin/randaut -A" + str(10) + " -H -Q" +
+        #                         str(nbr_vertices) + " -e" + str(density) + " --seed " + str(seed) + " -u -n1 1|"))
+        aut = next(spot.automata(SPOT_INSTALL + "bin/randaut -A" + str(actual_number) + " -H -Q" + str(nbr_vertices) +
+                                 " -e" + str(density) + " --seed " + str(seed) + " -n1 1|"))
+        # using the actual number of acceptance sets might not be necessary when generating a random aut since they are
+        # replaced.
+
+        # each transition in the automaton will have one acceptance set (priority) per priority function
+        for s in range(0, aut.num_states()):
+            # outgoing transition from s, they should all have the same priority vector
+            # (the original arena is state-based)
+            transition_priorities = []
+
+            # TODO changed to try equiprobable
+            """
+            # min even priority will appear more often to satisfy objective of Player 0 more often
+            test = random.random()
+            if test <= 0.2:
+                transition_priorities.append(random.randint(min(colors_map[0]), max(colors_map[0])))
+            else:
+                transition_priorities.append(min(colors_map[0]))
+            """
+            #transition_priorities.append(random.randint(min(colors_map[0]), max(colors_map[0])))
+
+            # for each function, select a random acceptance set (priority) between its min and max set
+            for i in range(0, total_nbr_objectives):
+
+                # with probability 30 % we provide 0.2 used foor 100 0.2
+                test = random.random()
+                if test <= prob:
+                    # notice that min(colors_map[i]) may be odd but actually corresponds to the minimum even
+                    # priority according to the ith priority function
+                    even_priority = min(colors_map[i]) + 1
+
+                    # while we have not selected a priority of the same parity as minimum (which corresponds to an
+                    # even priority in the logic of the priority functions)
+                    while even_priority % 2 != (min(colors_map[i]) % 2):
+                        # if there are more than two priorities in the color mapping for function i, we never use
+                        # the smallest even priority as objectives are too often satisfied yielding payoff (1,...,1)
+                        even_priority = random.randint(min(colors_map[i]) + 2, max(colors_map[i]))
+
+                    transition_priorities.append(even_priority)
+                # else we select an odd priority
+                else:
+                    # notice that min(colors_map[i]) may be odd but actually corresponds to the minimum even priority
+                    # according to the ith priority function
+                    odd_priority = min(colors_map[i])
+
+                    # while we have not selected a priority of the same parity as minimum + 1 (which corresponds to an
+                    # odd priority in the logic of the priority functions)
+                    while odd_priority % 2 != ((min(colors_map[i]) + 1) % 2):
+                        odd_priority = random.randint(min(colors_map[i]), max(colors_map[i]))
+                    transition_priorities.append(odd_priority)
+
+            # add the same vector for each transition
+            for t in aut.out(s):
+                t.acc = spot.mark_t(transition_priorities)
+
+        antichain = compute_antichain(aut, nbr_objectives, colors_map, is_payoff_realizable)
+        print(antichain)
+        instance_positivity, approx_antichain_size, number_calls_ex = counter_example_based_algorithm2(aut, nbr_objectives, colors_map)
+        _, number_calls = direct_antichain_algorithm2(aut, nbr_objectives, colors_map, is_payoff_realizable)
+
+    info = [len(antichain), number_calls, approx_antichain_size, number_calls_ex]
+    # if the automaton is newly generated, save it
+    aut.save(file_path)
+
+    return info, aut, nbr_objectives, colors_map
