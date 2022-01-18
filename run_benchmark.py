@@ -58,6 +58,17 @@ if __name__ == "__main__":
 
                 result = direct_antichain_algorithm(automaton, nbr_objectives, colors_map, is_payoff_realizable)
 
+            elif benchmark == "random_complex":
+
+                nbr_vertices = int(parameters[0])
+                density = float(parameters[1])
+                nbr_objectives = int(parameters[2])
+
+                automaton, nbr_objectives, colors_map = random_automaton_complex_antichain_64(nbr_vertices, density,
+                                                                                           nbr_objectives)
+
+                result = direct_antichain_algorithm(automaton, nbr_objectives, colors_map, is_payoff_realizable)
+
         elif algorithm == "counter_example":
 
             if benchmark == "intersection_increase_vertices":
@@ -100,6 +111,16 @@ if __name__ == "__main__":
                 nbr_objectives = int(parameters[2])
 
                 automaton, nbr_objectives, colors_map = random_automaton_positive_instances(nbr_vertices, density, nbr_objectives)
+
+                result = counter_example_based_algorithm(automaton, nbr_objectives, colors_map)
+
+            elif benchmark == "random_complex":
+
+                nbr_vertices = int(parameters[0])
+                density = float(parameters[1])
+                nbr_objectives = int(parameters[2])
+
+                automaton, nbr_objectives, colors_map = random_automaton_complex_antichain_64(nbr_vertices, density, nbr_objectives)
 
                 result = counter_example_based_algorithm(automaton, nbr_objectives, colors_map)
 
