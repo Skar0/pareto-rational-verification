@@ -1,0 +1,2 @@
+https://www.lrde.epita.fr/dload/spot/spot-2.10.3.tar.gz
+./configure --prefix ~/spot-2.10.2-install-64 --enable-max-accsets=64
