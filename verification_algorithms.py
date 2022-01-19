@@ -107,7 +107,7 @@ def is_payoff_realizable(p, automaton, colors_map, losing_for_0=False):
     # if there was no satisfied objective in the payoff, it cannot be encoded properly and we encode it as the
     # conjunction of the opposite of all objectives
     if first:
-        assert True == False
+        # assert True == False
         for i in range(1, len(p) + 1):
                 if first:
                     acc = parity_to_acceptance(colors_map[i], opposite=True)
