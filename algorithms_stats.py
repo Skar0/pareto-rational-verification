@@ -40,7 +40,7 @@ def direct_antichain_algorithm_statistics(automaton, nbr_objectives, colors_map,
 
                 if realizable(p, automaton, colors_map, losing_for_0=True):
 
-                    return False, counter, pareto_optimal_payoffs
+                    return False, pareto_optimal_payoffs, counter
             else:
 
                 counter += 1
