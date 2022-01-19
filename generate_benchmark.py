@@ -838,8 +838,12 @@ def random_large_antichain(nbr_vertices, density, nbr_objectives, proba_even_gen
 
     while len(antichain) < nbr_objectives or instance_positivity != positivity:
 
+        print("--- choosing random seed ---")
+
         # use a seed for randaut
         seed = random.randint(1, 9223372036854775807)
+
+        print("--- calling randaut ---")
 
         # -H is output in hoa, A is the acceptance condition with the number of sets, Q is the number of vertices,
         # n is the number of automata and 1 is the number of atomic propositions
@@ -849,6 +853,8 @@ def random_large_antichain(nbr_vertices, density, nbr_objectives, proba_even_gen
                                  " -e" + str(density) + " --seed " + str(seed) + " -n1 1|"))
         # using the actual number of acceptance sets might not be necessary when generating a random aut since they are
         # replaced.
+
+        print("--- assigning priorities ---")
 
         # each transition in the automaton will have one acceptance set (priority) per priority function
         for s in range(0, aut.num_states()):
@@ -860,8 +866,7 @@ def random_large_antichain(nbr_vertices, density, nbr_objectives, proba_even_gen
             for i in range(0, total_nbr_objectives):
 
                 # if we try to generate positive instances and the current function is Player 0's
-                if positivity and i == 0:
-
+                if i == 0:
                     test_positive = random.random()
 
                     # with probability proba_even_0, add a random priority
@@ -905,9 +910,13 @@ def random_large_antichain(nbr_vertices, density, nbr_objectives, proba_even_gen
                 for t in aut.out(s):
                     t.acc = spot.mark_t(transition_priorities)
 
+        print("--- computing the antichain ---")
         antichain = compute_antichain(aut, nbr_objectives, colors_map, is_payoff_realizable)
-        print("Current generated antichain " + str(antichain))
+        print("Current generated antichain size " + str(len(antichain)))
+        print(antichain)
+        print("--- computing positivity ---")
         instance_positivity = counter_example_based_algorithm(aut, nbr_objectives, colors_map)
+        print("Positivity " + str(instance_positivity))
 
 
     # Calling statistics functions for statistics purposes
