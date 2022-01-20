@@ -923,16 +923,23 @@ def random_large_antichain(nbr_vertices, density, nbr_objectives, proba_even_gen
 
     print("---------- Adequate example found ----------")
     print("--- computing CE stats ---")
-    _, CE_antichain_approximation, CE_nbr_calls = counter_example_based_statistics(aut, nbr_objectives, colors_map)
+    _, CE_antichain_approximation, CE_exists_call_stats, CE_dominated_calls_stats = counter_example_based_statistics(aut, nbr_objectives, colors_map)
     print("--- computing DA stats ---")
-    _, DA_antichain_approximation, DA_nbr_calls = direct_antichain_algorithm_statistics(aut, nbr_objectives, colors_map,
+    _, DA_antichain_approximation, DA_realizable_stats, DA_realizable_losing_stats = direct_antichain_algorithm_statistics(aut, nbr_objectives, colors_map,
                                                                                         is_payoff_realizable)
     print("--- computing losing payoffs stats ---")
-    losing_payoffs = compute_losing_payoffs(aut, nbr_objectives, colors_map, is_payoff_realizable)
+    all_possible_realizable, losing_payoffs = compute_losing_payoffs(aut, nbr_objectives, colors_map, is_payoff_realizable)
 
-    stats = [len(antichain), len(losing_payoffs),
-             len(CE_antichain_approximation), CE_nbr_calls,
-             len(DA_antichain_approximation), DA_nbr_calls]
+    stats = [len(antichain),
+             len(losing_payoffs),
+             len(all_possible_realizable),
+             len(CE_antichain_approximation),
+             CE_exists_call_stats,
+             CE_dominated_calls_stats,
+             len(DA_antichain_approximation),
+             DA_realizable_stats,
+             DA_realizable_losing_stats
+             ]
 
     print("--- saving aut ---")
     # if the automaton is newly generated, save it
