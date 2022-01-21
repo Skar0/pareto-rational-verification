@@ -99,14 +99,12 @@ def counter_example_based_statistics(automaton, nbr_objectives, colors_map):
 
     dominated_times = []
 
-    testt = []
-    testt2 = []
-
     while True:
 
         start_time_process = time.process_time()
 
-        counter_example_ex = counter_example_exists(nbr_objectives, automaton, colors_map, pareto_optimal_payoffs)
+        a_counter_example_exists, accepting_run_counter_example = \
+            counter_example_exists(nbr_objectives, automaton, colors_map, pareto_optimal_payoffs)
 
         end_time_process = time.process_time()
 
@@ -114,24 +112,21 @@ def counter_example_based_statistics(automaton, nbr_objectives, colors_map):
 
         exists_times.append(end_time_process - start_time_process)
 
-        if counter_example_ex:
+        if a_counter_example_exists:
 
             # the call to counter_example_exists modifies the acceptance condition of the automaton to check for a
             # counter example (run losing for Player 0 with payoff not dominated by a payoff in pareto_optimal_payoffs).
             # If such a counter example exists, it is an accepting run of this automaton and we retrieve its actual
             # payoff.
 
-            start_time_process = time.process_time()
-
-            counter_example_payoff = get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map)
-
-            end_time_process = time.process_time()
-
-            testt.append(end_time_process - start_time_process)
+            counter_example_payoff = get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map,
+                                                                 accepting_run_counter_example)
 
             start_time_process = time.process_time()
 
-            counter_example_dom = counter_example_dominated(nbr_objectives, automaton, colors_map, counter_example_payoff)
+            is_counter_example_dominated, accepting_run_dominating = counter_example_dominated(nbr_objectives,
+                                                                                               automaton, colors_map,
+                                                                                               counter_example_payoff)
 
             end_time_process = time.process_time()
 
@@ -139,41 +134,29 @@ def counter_example_based_statistics(automaton, nbr_objectives, colors_map):
 
             dominated_times.append(end_time_process - start_time_process)
 
-            if counter_example_dom:
+            if is_counter_example_dominated:
 
                 # the call to counter_example_dominated modifies the acceptance condition of the automaton to check
                 # whether the counter example payoff is dominated by some other payoff (winning for Player 0 and
                 # strictly larger than that of counter_example_payoff). If such a larger payoff exists, it is the payoff
                 # of an accepting run of this automaton and we retrieve its actual payoff.
 
-                start_time_process = time.process_time()
+                dominating_payoff = get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map,
+                                                                accepting_run_dominating)
 
-                dominating_payoff = get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map)
-
-                end_time_process = time.process_time()
-
-                testt.append(end_time_process - start_time_process)
-
-                start_time_process = time.process_time()
-
-                # update the set of PO payoffs with this new payoff
                 # update the set of PO payoffs with this new payoff
                 pareto_optimal_payoffs = add_payoff_to_antichain(pareto_optimal_payoffs, dominating_payoff)
-                end_time_process = time.process_time()
-
-                testt2.append(end_time_process - start_time_process)
-
 
             else:
 
                 # a counter example is not dominated by another payoff, hence the instance is false
 
-                return False, pareto_optimal_payoffs, [counter_exists, exists_times], [counter_dominated, dominated_times], [testt, testt2]
+                return False, pareto_optimal_payoffs, [counter_exists, exists_times], [counter_dominated, dominated_times]
         else:
 
             # there are no counter examples, hence the instance is true
 
-            return True, pareto_optimal_payoffs, [counter_exists, exists_times], [counter_dominated, dominated_times], [testt, testt2]
+            return True, pareto_optimal_payoffs, [counter_exists, exists_times], [counter_dominated, dominated_times]
 
 
 def compute_antichain(automaton, nbr_objectives, colors_map, realizable):
