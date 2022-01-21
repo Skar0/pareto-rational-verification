@@ -119,6 +119,31 @@ def intersection_example(k, negative_instance=False):
 
         index += 22
 
+    print("---------- Adequate example found ----------")
+    print("--- computing the antichain ---")
+    antichain = compute_antichain(aut, 4, {0: [0, 1], 1: [2, 3], 2: [4, 5], 3: [6, 7], 4: [8, 9]}, is_payoff_realizable)
+    print("--- computing CE stats ---")
+    _, CE_antichain_approximation, CE_exists_call_stats, CE_dominated_calls_stats = counter_example_based_statistics(
+        aut, 4,  {0: [0, 1], 1: [2, 3], 2: [4, 5], 3: [6, 7], 4: [8, 9]})
+    print("--- computing DA stats ---")
+    _, DA_antichain_approximation, DA_realizable_stats, DA_realizable_losing_stats = direct_antichain_algorithm_statistics(
+        aut, 4,  {0: [0, 1], 1: [2, 3], 2: [4, 5], 3: [6, 7], 4: [8, 9]},
+        is_payoff_realizable)
+    print("--- computing losing payoffs stats ---")
+    all_possible_realizable, losing_payoffs = compute_losing_payoffs(aut, 4,  {0: [0, 1], 1: [2, 3], 2: [4, 5], 3: [6, 7], 4: [8, 9]},
+                                                                     is_payoff_realizable)
+
+    stats = [len(antichain),
+             len(losing_payoffs),
+             len(all_possible_realizable),
+             len(CE_antichain_approximation),
+             CE_exists_call_stats,
+             CE_dominated_calls_stats,
+             len(DA_antichain_approximation),
+             DA_realizable_stats,
+             DA_realizable_losing_stats
+             ]
+
     return aut, 4, {0: [0, 1], 1: [2, 3], 2: [4, 5], 3: [6, 7], 4: [8, 9]}
 
 
