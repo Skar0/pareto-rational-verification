@@ -89,6 +89,8 @@ for i in list(range(10, 4, -1)):
         end_time_perf = time.perf_counter()
         end = time.time()
 
+        assert positivity == gen_positivity
+
         counter_example_times_process.append(float('%.2f' % (end_time_process - start_time_process)))
         counter_example_times_perf_counter.append(float('%.2f' % (end_time_perf - start_time_perf)))
         counter_example_times.append(float('%.2f' % (end - start)))
@@ -104,6 +106,8 @@ for i in list(range(10, 4, -1)):
         end_time_process = time.process_time()
         end_time_perf = time.perf_counter()
         end = time.time()
+
+        assert positivity == gen_positivity
 
         direct_antichain_times_process.append(float('%.2f' % (end_time_process - start_time_process)))
         direct_antichain_times_perf_counter.append(float('%.2f' % (end_time_perf - start_time_perf)))
