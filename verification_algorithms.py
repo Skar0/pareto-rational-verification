@@ -267,7 +267,9 @@ def counter_example_exists(nbr_objectives, automaton, colors_map, pareto_optimal
     acceptance_condition = spot.acc_cond(acc.used_sets().max_set(), acc)
     automaton.set_acceptance(acceptance_condition)
 
-    return not automaton.is_empty()
+    accepting_run = automaton.accepting_run()
+
+    return not accepting_run is None, accepting_run
 
 
 def counter_example_dominated(nbr_objectives, automaton, colors_map, counter_example_payoff):
@@ -314,10 +316,12 @@ def counter_example_dominated(nbr_objectives, automaton, colors_map, counter_exa
     acceptance_condition = spot.acc_cond(acc.used_sets().max_set(), acc)
     automaton.set_acceptance(acceptance_condition)
 
-    return not automaton.is_empty()
+    accepting_run = automaton.accepting_run()
+
+    return not accepting_run is None, accepting_run
 
 
-def get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map):
+def get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map, accepting_run):
     """
     Retrieve an accepting run of the automaton and compute the payoff of this run.
     :param nbr_objectives: number of objectives of Player 1.
@@ -330,7 +334,7 @@ def get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map):
     inf_priorities = [[] for _ in range(nbr_objectives + 1)]
 
     # retrieve an accepting run for the current acceptance condition
-    run = automaton.accepting_run()
+    run = accepting_run
 
     # special case when there is one priority per priority function, in that case there are some transitions with no
     # priorities for some functions (e.g. a transition has either priority 0 or no priority for the first function and
@@ -398,23 +402,32 @@ def counter_example_based_algorithm(automaton, nbr_objectives, colors_map):
     pareto_optimal_payoffs = []
 
     while True:
-        if counter_example_exists(nbr_objectives, automaton, colors_map, pareto_optimal_payoffs):
+        a_counter_example_exists, accepting_run_counter_example = \
+            counter_example_exists(nbr_objectives, automaton, colors_map, pareto_optimal_payoffs)
+
+        if a_counter_example_exists:
 
             # the call to counter_example_exists modifies the acceptance condition of the automaton to check for a
             # counter example (run losing for Player 0 with payoff not dominated by a payoff in pareto_optimal_payoffs).
             # If such a counter example exists, it is an accepting run of this automaton and we retrieve its actual
             # payoff.
 
-            counter_example_payoff = get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map)
+            counter_example_payoff = get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map,
+                                                                 accepting_run_counter_example)
 
-            if counter_example_dominated(nbr_objectives, automaton, colors_map, counter_example_payoff):
+            is_counter_example_dominated, accepting_run_dominating = counter_example_dominated(nbr_objectives,
+                                                                                               automaton, colors_map,
+                                                                                               counter_example_payoff)
+
+            if is_counter_example_dominated:
 
                 # the call to counter_example_dominated modifies the acceptance condition of the automaton to check
                 # whether the counter example payoff is dominated by some other payoff (winning for Player 0 and
                 # strictly larger than that of counter_example_payoff). If such a larger payoff exists, it is the payoff
                 # of an accepting run of this automaton and we retrieve its actual payoff.
 
-                dominating_payoff = get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map)
+                dominating_payoff = get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map,
+                                                                accepting_run_dominating)
 
                 # update the set of PO payoffs with this new payoff
                 pareto_optimal_payoffs = add_payoff_to_antichain(pareto_optimal_payoffs, dominating_payoff)
