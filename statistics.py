@@ -14,8 +14,9 @@ def antichain_optimization_algorithm_statistics(automaton, nbr_objectives, color
     :param nbr_objectives: the number t of objectives of Player 1.
     :param colors_map: maps each parity objective to the set of SPOT acceptance sets used to represent its priorities.
     :param realizable: function which decides if a (extended) payoff is realizable.
-    :return: whether the PRV problem is satisfied, the set of PO payoffs, a pair [number of calls, list of running time]
-    for the realizable function, and a similar pair for the realizable function when losing for Player 0.
+    :return: whether the PRV problem is satisfied, the approximation of the set of PO payoffs, a pair [number of calls,
+    list of running time] for the realizable function, and a similar pair for the realizable function when losing for
+    Player 0.
     """
 
     maximal_payoff = tuple([1] * nbr_objectives)
