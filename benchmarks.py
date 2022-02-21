@@ -125,7 +125,7 @@ def intersection_example(k, negative_instance=False):
     antichain = compute_antichain(aut, t, colors_map, is_payoff_realizable)
     all_possible_realizable, losing_payoffs = compute_losing_payoffs(aut, t, colors_map, is_payoff_realizable)
     print("--- computing counterexample algorithm statistics ---")
-    _, ce_antichain_approximation, ce_exists_call_stats, ce_dominated_calls_stats = \
+    _, ce_antichain_approximation, ce_exists_call_stats, ce_dominated_calls_stats, _ = \
         counterexample_based_statistics(aut, t, colors_map)
     print("--- computing antichain optimization algorithm statistics ---")
     _, ao_antichain_approximation, ao_realizable_stats, ao_realizable_losing_stats = \
@@ -306,7 +306,7 @@ def intersection_example_objective_increase(k, negative_instance=False):
     antichain = compute_antichain(aut, t, colors_map, is_payoff_realizable)
     all_possible_realizable, losing_payoffs = compute_losing_payoffs(aut, t, colors_map, is_payoff_realizable)
     print("--- computing counterexample algorithm statistics ---")
-    _, ce_antichain_approximation, ce_exists_call_stats, ce_dominated_calls_stats = \
+    _, ce_antichain_approximation, ce_exists_call_stats, ce_dominated_calls_stats, _ = \
         counterexample_based_statistics(aut, t, colors_map)
     print("--- computing antichain optimization algorithm statistics ---")
     _, ao_antichain_approximation, ao_realizable_stats, ao_realizable_losing_stats = \
@@ -391,7 +391,7 @@ def random_automaton(nbr_vertices, density, nbr_objectives, proba_even_general, 
         all_possible_realizable, losing_payoffs = compute_losing_payoffs(aut, nbr_objectives, colors_map,
                                                                          is_payoff_realizable)
         print("--- computing counterexample algorithm statistics ---")
-        _, ce_antichain_approximation, ce_exists_call_stats, ce_dominated_calls_stats = \
+        _, ce_antichain_approximation, ce_exists_call_stats, ce_dominated_calls_stats, _ = \
             counterexample_based_statistics(aut, nbr_objectives, colors_map)
         print("--- computing antichain optimization algorithm statistics ---")
         _, ao_antichain_approximation, ao_realizable_stats, ao_realizable_losing_stats = \
@@ -502,7 +502,7 @@ def random_automaton(nbr_vertices, density, nbr_objectives, proba_even_general, 
     all_possible_realizable, losing_payoffs = compute_losing_payoffs(aut, nbr_objectives, colors_map,
                                                                      is_payoff_realizable)
     print("--- computing counterexample algorithm statistics ---")
-    _, ce_antichain_approximation, ce_exists_call_stats, ce_dominated_calls_stats = \
+    _, ce_antichain_approximation, ce_exists_call_stats, ce_dominated_calls_stats, _ = \
         counterexample_based_statistics(aut, nbr_objectives, colors_map)
     print("--- computing antichain optimization algorithm statistics ---")
     _, ao_antichain_approximation, ao_realizable_stats, ao_realizable_losing_stats = \

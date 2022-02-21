@@ -108,7 +108,11 @@ def counterexample_based_statistics(automaton, nbr_objectives, colors_map):
 
     dominated_times = []
 
+    approximation_evolution = []
+
     while True:
+
+        approximation_evolution.append(len(pareto_optimal_payoffs))
 
         start_time_process = time.process_time()
 
@@ -151,13 +155,13 @@ def counterexample_based_statistics(automaton, nbr_objectives, colors_map):
                 # a counter example is not dominated by another payoff, hence the instance is false
 
                 return False, pareto_optimal_payoffs, [counter_exists, exists_times], \
-                                                      [counter_dominated, dominated_times]
+                                                      [counter_dominated, dominated_times], approximation_evolution
         else:
 
             # there are no counter examples, hence the instance is true
 
             return True, pareto_optimal_payoffs, [counter_exists, exists_times], \
-                                                 [counter_dominated, dominated_times]
+                                                 [counter_dominated, dominated_times], approximation_evolution
 
 
 def compute_antichain(automaton, nbr_objectives, colors_map, realizable):
