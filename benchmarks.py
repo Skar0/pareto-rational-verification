@@ -2,7 +2,7 @@ import spot
 import buddy
 import random
 import os
-from statistics import compute_antichain, counterexample_based_statistics, \
+from benchmarks_statistics import compute_antichain, counterexample_based_statistics, \
     antichain_optimization_algorithm_statistics, compute_losing_payoffs
 from verification_algorithms import is_payoff_realizable, counterexample_based_algorithm
 
