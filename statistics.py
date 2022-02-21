@@ -86,14 +86,15 @@ def antichain_optimization_algorithm_statistics(automaton, nbr_objectives, color
 def counter_example_based_statistics(automaton, nbr_objectives, colors_map):
     """
     The algorithm is as implemented in verification_algorithms, with new instructions to compute and return statistics.
-    Compute and return the following statistics on the algorithm: set of PO payoffs, number of calls to the function
-    counter_example_exists and their running time, number of calls to the counter_example_dominated function and their
-    running time.
+    Compute and return the following statistics on the algorithm: approximation of the set of PO payoffs computed by the
+    algorithm, number of calls to the function counter_example_exists and their running time, number of calls to the
+    counter_example_dominated function and their running time.
     :param automaton: the automaton.
     :param nbr_objectives: the number t of objectives of Player 1.
     :param colors_map: maps each parity objective to the set of SPOT acceptance sets used to represent its priorities.
-    :return: whether the PRV problem is satisfied, the set of PO payoffs, a pair [number of calls, list of running time]
-    for the counter_example_exists function, and a similar pair for the counter_example_dominated function.
+    :return: whether the PRV problem is satisfied, the approximation of the set of PO payoffs, a pair [number of calls,
+    list of running time] for the counter_example_exists function, and a similar pair for the counter_example_dominated
+    function.
     """
 
     pareto_optimal_payoffs = []
