@@ -83,7 +83,7 @@ def antichain_optimization_algorithm_statistics(automaton, nbr_objectives, color
                                          [counter_realizable_losing, realizable_losing_times]
 
 
-def counter_example_based_statistics(automaton, nbr_objectives, colors_map):
+def counterexample_based_statistics(automaton, nbr_objectives, colors_map):
     """
     The algorithm is as implemented in verification_algorithms, with new instructions to compute and return statistics.
     Compute and return the following statistics on the algorithm: approximation of the set of PO payoffs computed by the
