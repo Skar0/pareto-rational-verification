@@ -1,20 +1,23 @@
 import time
 from collections import deque, defaultdict
-
 from verification_algorithms import smaller_than, generate_smaller_payoffs, counter_example_exists, \
     get_payoff_of_accepting_run, counter_example_dominated, add_payoff_to_antichain
 
 
-def direct_antichain_algorithm_statistics(automaton, nbr_objectives, colors_map, realizable):
+def antichain_optimization_algorithm_statistics(automaton, nbr_objectives, colors_map, realizable):
     """
-    Direct antichain algorithm used for statistics. Returns the antichain approximation and the number
-    of calls to automata emptiness.
+    The algorithm is as implemented in verification_algorithms, with new instructions to compute and return statistics.
+    Compute and return the following statistics on the algorithm: set of PO payoffs, number of calls to the realizable
+    function and their running time, number of calls to the realizable function when losing for Player 0 and their
+    running time.
     :param automaton: the automaton.
     :param nbr_objectives: the number t of objectives of Player 1.
     :param colors_map: maps each parity objective to the set of SPOT acceptance sets used to represent its priorities.
     :param realizable: function which decides if a (extended) payoff is realizable.
-    :return: whether the PRV problem is satisfied.
+    :return: whether the PRV problem is satisfied, the set of PO payoffs, a pair [number of calls, list of running time]
+    for the realizable function, and a similar pair for the realizable function when losing for Player 0.
     """
+
     maximal_payoff = tuple([1] * nbr_objectives)
 
     pareto_optimal_payoffs = []
@@ -47,7 +50,7 @@ def direct_antichain_algorithm_statistics(automaton, nbr_objectives, colors_map,
 
             counter_realizable += 1
 
-            realizable_times.append(end_time_process-start_time_process)
+            realizable_times.append(end_time_process - start_time_process)
 
             if is_realizable:
 
@@ -64,29 +67,33 @@ def direct_antichain_algorithm_statistics(automaton, nbr_objectives, colors_map,
                 realizable_losing_times.append(end_time_process - start_time_process)
 
                 if is_realizable_losing:
-
-                    return False, pareto_optimal_payoffs, [counter_realizable, realizable_times], [counter_realizable_losing, realizable_losing_times]
+                    return False, pareto_optimal_payoffs, [counter_realizable, realizable_times], \
+                                                          [counter_realizable_losing, realizable_losing_times]
             else:
 
                 for p_star in generate_smaller_payoffs(p):
 
                     if (not any(smaller_than(p_star, p_prime) for p_prime in pareto_optimal_payoffs)) and \
                             not visited[p_star]:
-
                         queue.append(p_star)
+
                         visited[p_star] = 1
 
-    return True,  pareto_optimal_payoffs, [counter_realizable, realizable_times], [counter_realizable_losing, realizable_losing_times]
+    return True, pareto_optimal_payoffs, [counter_realizable, realizable_times], \
+                                         [counter_realizable_losing, realizable_losing_times]
 
 
 def counter_example_based_statistics(automaton, nbr_objectives, colors_map):
     """
-    Counter-example based algorithm used for statistics. Returns the antichain approximation and the number
-    of calls to automata emptiness.
+    The algorithm is as implemented in verification_algorithms, with new instructions to compute and return statistics.
+    Compute and return the following statistics on the algorithm: set of PO payoffs, number of calls to the function
+    counter_example_exists and their running time, number of calls to the counter_example_dominated function and their
+    running time.
     :param automaton: the automaton.
     :param nbr_objectives: the number t of objectives of Player 1.
     :param colors_map: maps each parity objective to the set of SPOT acceptance sets used to represent its priorities.
-    :return: whether the PRV problem is satisfied.
+    :return: whether the PRV problem is satisfied, the set of PO payoffs, a pair [number of calls, list of running time]
+    for the counter_example_exists function, and a similar pair for the counter_example_dominated function.
     """
 
     pareto_optimal_payoffs = []
@@ -114,12 +121,7 @@ def counter_example_based_statistics(automaton, nbr_objectives, colors_map):
 
         if a_counter_example_exists:
 
-            # the call to counter_example_exists modifies the acceptance condition of the automaton to check for a
-            # counter example (run losing for Player 0 with payoff not dominated by a payoff in pareto_optimal_payoffs).
-            # If such a counter example exists, it is an accepting run of this automaton and we retrieve its actual
-            # payoff.
-
-            counter_example_payoff = get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map,
+            counter_example_payoff = get_payoff_of_accepting_run(nbr_objectives, colors_map,
                                                                  accepting_run_counter_example)
 
             start_time_process = time.process_time()
@@ -136,12 +138,7 @@ def counter_example_based_statistics(automaton, nbr_objectives, colors_map):
 
             if is_counter_example_dominated:
 
-                # the call to counter_example_dominated modifies the acceptance condition of the automaton to check
-                # whether the counter example payoff is dominated by some other payoff (winning for Player 0 and
-                # strictly larger than that of counter_example_payoff). If such a larger payoff exists, it is the payoff
-                # of an accepting run of this automaton and we retrieve its actual payoff.
-
-                dominating_payoff = get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map,
+                dominating_payoff = get_payoff_of_accepting_run(nbr_objectives, colors_map,
                                                                 accepting_run_dominating)
 
                 # update the set of PO payoffs with this new payoff
@@ -151,17 +148,20 @@ def counter_example_based_statistics(automaton, nbr_objectives, colors_map):
 
                 # a counter example is not dominated by another payoff, hence the instance is false
 
-                return False, pareto_optimal_payoffs, [counter_exists, exists_times], [counter_dominated, dominated_times]
+                return False, pareto_optimal_payoffs, [counter_exists, exists_times], \
+                                                      [counter_dominated, dominated_times]
         else:
 
             # there are no counter examples, hence the instance is true
 
-            return True, pareto_optimal_payoffs, [counter_exists, exists_times], [counter_dominated, dominated_times]
+            return True, pareto_optimal_payoffs, [counter_exists, exists_times], \
+                                                 [counter_dominated, dominated_times]
 
 
 def compute_antichain(automaton, nbr_objectives, colors_map, realizable):
     """
-    Computes and returns the antichain of realizable payoffs in the automaton.
+    Computes and returns the antichain of realizable payoffs in the automaton (that is the PO realizable payoffs). This
+    is done by going through the lattice of payoffs level-by-level as done in the antichain optimization algorithm.
     :param automaton: the automaton.
     :param nbr_objectives: the number t of objectives of Player 1.
     :param colors_map: maps each parity objective to the set of SPOT acceptance sets used to represent its priorities.
@@ -195,7 +195,6 @@ def compute_antichain(automaton, nbr_objectives, colors_map, realizable):
 
                     if (not any(smaller_than(p_star, p_prime) for p_prime in pareto_optimal_payoffs)) and \
                             not visited[p_star]:
-
                         queue.append(p_star)
                         visited[p_star] = 1
 
@@ -204,13 +203,15 @@ def compute_antichain(automaton, nbr_objectives, colors_map, realizable):
 
 def compute_losing_payoffs(automaton, nbr_objectives, colors_map, realizable):
     """
-    Computes and returns the antichain of realizable payoffs in the automaton as well as the set of payoffs p such that
-    (0, p) is realizable.
+    Computes and returns the set of all realizable payoffs in the automaton (that is all payoffs such that there exists
+    a play with that payoff, regardless of whether it is PO), as well as the set of payoffs p such that (0, p) is
+    realizable (which we call realizable losing payoffs). This function therefore requires to completely go through the
+    lattice of payoffs and may take time to terminate when nbr_objectives is large.
     :param automaton: the automaton.
     :param nbr_objectives: the number t of objectives of Player 1.
     :param colors_map: maps each parity objective to the set of SPOT acceptance sets used to represent its priorities.
     :param realizable: function which decides if a (extended) payoff is realizable.
-    :return: the antichain of realizable payoffs in the automaton.
+    :return:  the set of all realizable payoffs and the set of all realizable losing payoffs in the automaton.
     """
 
     maximal_payoff = tuple([1] * nbr_objectives)
@@ -230,17 +231,15 @@ def compute_losing_payoffs(automaton, nbr_objectives, colors_map, realizable):
         p = queue.popleft()
 
         if realizable(p, automaton, colors_map, losing_for_0=True):
-
             losing_payoffs.append(p)
+            all_realizable_payoffs.append(p)
 
-        if realizable(p, automaton, colors_map):
-
+        elif realizable(p, automaton, colors_map):
             all_realizable_payoffs.append(p)
 
         for p_star in generate_smaller_payoffs(p):
 
             if not visited[p_star]:
-
                 queue.append(p_star)
                 visited[p_star] = 1
 
