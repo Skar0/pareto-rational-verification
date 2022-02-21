@@ -1,7 +1,4 @@
-import sys
-sys.path.insert(0, "/Users/clement/spot-2.10.2-install-fixed-64/lib/python3.8/site-packages")
 import spot
-
 from collections import deque, defaultdict
 
 
@@ -51,7 +48,6 @@ def add_payoff_to_antichain(pareto_optimal_payoffs, dominating_payoff):
     :return: the new list of PO payoffs.
     """
 
-    # TODO use a filter to filter out smaller elements
     new_list = [dominating_payoff]
 
     for payoff in pareto_optimal_payoffs:
@@ -76,14 +72,19 @@ def parity_to_acceptance(colors, opposite=False):
     # the << shifts the colors to start from min_color
     min_color = min(colors)
     if not opposite:
-        return spot.acc_code("parity min even "+str(len(colors))) << min_color
+        return spot.acc_code("parity min even " + str(len(colors))) << min_color
     else:
-        return spot.acc_code("parity min odd "+str(len(colors))) << min_color
+        return spot.acc_code("parity min odd " + str(len(colors))) << min_color
 
 
 def is_payoff_realizable(p, automaton, colors_map, losing_for_0=False):
     """
-    Whether the payoff is realizable.
+    Whether the payoff is realizable. In practice, this function checks for the existence of a play with a payoff equal
+    or larger to p by trying to find a play with a payoff that satisfies at least all the objectives satisfied in p. As
+    we have shown in the paper, when going through the lattice of payoffs using the antichain optimization algorithm,
+    this test is sufficient to find the existence of a play with payoff p. In the special case where p does not satisfy
+    any objective, the existence is decided by trying to find a play satisfying the conjunction of the opposite for all
+    objectives of Player 1.
     :param p: a payoff.
     :param automaton: the automaton.
     :param colors_map: maps each parity objective to the set of SPOT acceptance sets used to represent its priorities.
@@ -104,16 +105,15 @@ def is_payoff_realizable(p, automaton, colors_map, losing_for_0=False):
             else:
                 acc &= parity_to_acceptance(colors_map[i])
 
-    # if there was no satisfied objective in the payoff, it cannot be encoded properly and we encode it as the
+    # if there was no satisfied objective in the payoff, it cannot be encoded properly, and we encode it as the
     # conjunction of the opposite of all objectives
     if first:
-        # assert True == False
         for i in range(1, len(p) + 1):
-                if first:
-                    acc = parity_to_acceptance(colors_map[i], opposite=True)
-                    first = False
-                else:
-                    acc &= parity_to_acceptance(colors_map[i], opposite=True)
+            if first:
+                acc = parity_to_acceptance(colors_map[i], opposite=True)
+                first = False
+            else:
+                acc &= parity_to_acceptance(colors_map[i], opposite=True)
 
     # if the extended payoff is (0,p) add a conjunction with the opposite of objective 0
     if losing_for_0:
@@ -126,14 +126,17 @@ def is_payoff_realizable(p, automaton, colors_map, losing_for_0=False):
     return not automaton.is_empty()
 
 
-def direct_antichain_algorithm(automaton, nbr_objectives, colors_map, realizable):
+def antichain_optimization_algorithm(automaton, nbr_objectives, colors_map, realizable):
     """
+    The algorithm is as presented in the pseudocode in the paper with the following notations: "Q" is written "queue"
+    and "A" is written "pareto_optimal_payoffs".
     :param automaton: the automaton.
     :param nbr_objectives: the number t of objectives of Player 1.
     :param colors_map: maps each parity objective to the set of SPOT acceptance sets used to represent its priorities.
     :param realizable: function which decides if a (extended) payoff is realizable.
     :return: whether the PRV problem is satisfied.
     """
+
     maximal_payoff = tuple([1] * nbr_objectives)
 
     pareto_optimal_payoffs = []
@@ -144,6 +147,7 @@ def direct_antichain_algorithm(automaton, nbr_objectives, colors_map, realizable
     visited = defaultdict(int)
 
     while queue:
+
         p = queue.popleft()
 
         if not any(smaller_than(p, p_prime) for p_prime in pareto_optimal_payoffs):
@@ -153,7 +157,6 @@ def direct_antichain_algorithm(automaton, nbr_objectives, colors_map, realizable
                 pareto_optimal_payoffs.append(p)
 
                 if realizable(p, automaton, colors_map, losing_for_0=True):
-
                     return False
             else:
 
@@ -161,8 +164,8 @@ def direct_antichain_algorithm(automaton, nbr_objectives, colors_map, realizable
 
                     if (not any(smaller_than(p_star, p_prime) for p_prime in pareto_optimal_payoffs)) and \
                             not visited[p_star]:
-
                         queue.append(p_star)
+
                         visited[p_star] = 1
 
     return True
@@ -226,8 +229,8 @@ def disjunction_of_unsatisfied_objectives_in_p(nbr_objectives, p, colors_map):
 
 def counter_example_exists(nbr_objectives, automaton, colors_map, pareto_optimal_payoffs):
     """
-    Check for the existence of a run with a payoff equal or larger or incomparable to every payoff in the current
-    antichain of PO payoffs and that is losing for Player 0.
+    Check for the existence of a run with a payoff equal or larger to some or incomparable to every payoff in the
+    current antichain of PO payoffs and that is losing for Player 0.
     :param nbr_objectives: number of objectives of Player 1.
     :param automaton: the automaton.
     :param colors_map: maps each parity objective to the set of SPOT acceptance sets used to represent its priorities.
@@ -267,9 +270,11 @@ def counter_example_exists(nbr_objectives, automaton, colors_map, pareto_optimal
     acceptance_condition = spot.acc_cond(acc.used_sets().max_set(), acc)
     automaton.set_acceptance(acceptance_condition)
 
+    # this avoids performing emptiness check and accepting run retrieval in two separate steps, since we need an
+    # accepting run if the language is not empty for the counterexample algorithm.
     accepting_run = automaton.accepting_run()
 
-    return not accepting_run is None, accepting_run
+    return accepting_run is not None, accepting_run
 
 
 def counter_example_dominated(nbr_objectives, automaton, colors_map, counter_example_payoff):
@@ -316,38 +321,37 @@ def counter_example_dominated(nbr_objectives, automaton, colors_map, counter_exa
     acceptance_condition = spot.acc_cond(acc.used_sets().max_set(), acc)
     automaton.set_acceptance(acceptance_condition)
 
+    # this avoids performing emptiness check and accepting run retrieval in two separate steps, since we need an
+    # accepting run if the language is not empty for the counterexample algorithm.
     accepting_run = automaton.accepting_run()
 
-    return not accepting_run is None, accepting_run
+    return accepting_run is not None, accepting_run
 
 
-def get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map, accepting_run):
+def get_payoff_of_accepting_run(nbr_objectives, colors_map, accepting_run):
     """
-    Retrieve an accepting run of the automaton and compute the payoff of this run.
+    Compute the payoff of the provided accepting run of the automaton.
     :param nbr_objectives: number of objectives of Player 1.
-    :param automaton: the automaton.
     :param colors_map: maps each parity objective to the set of SPOT acceptance sets used to represent its priorities.
-    :return: the payoff of an accepting run of the automaton.
+    :param accepting_run: an accepting run of the automaton for a previously encoded language.
+    :return: the payoff of accepting_run.
     """
 
     # priorities occurring infinitely often for each priority function
     inf_priorities = [[] for _ in range(nbr_objectives + 1)]
 
-    # retrieve an accepting run for the current acceptance condition
-    run = accepting_run
-
-    # special case when there is one priority per priority function, in that case there are some transitions with no
-    # priorities for some functions (e.g. a transition has either priority 0 or no priority for the first function and
-    # the condition if Inf(0)). Therefore, the objective is satisfied if 0 is in the list of occurring priorities in
-    # the cycle part of the run.
-
     """
+    when there is only one priority per priority function, in that case there are some transitions with no priorities 
+    for some functions (e.g. a transition has either priority 0 or no priority for the first function and the condition 
+    is Inf(0)). Therefore, the objective is satisfied if 0 is in the list of occurring priorities in the cycle part of 
+    the run.
+
     if all(len(map_for_obj) == 1 for map_for_obj in colors_map.values()):
         
         # maintain a set of occurring priorities in the cycle part of the run
         occurring_priorities = set()
         # for each transition in the cycle part of the run
-        for trans in run.cycle:
+        for trans in accepting_run.cycle:
             # for each acceptance set in the transition (of which there might not be one for each objective)
             for acc_set in trans.acc.sets():
                 # add the acceptance set to the list of occurring priorities
@@ -364,7 +368,7 @@ def get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map, accepting
     """
 
     # for each transition in the cycle part of the run
-    for trans in run.cycle:
+    for trans in accepting_run.cycle:
         i = 0
         # for each acceptance set in the transition (of which there are nbr_objectives + 1 by construction)
         for acc_set in trans.acc.sets():
@@ -391,8 +395,10 @@ def get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map, accepting
     return tuple(payoff)
 
 
-def counter_example_based_algorithm(automaton, nbr_objectives, colors_map):
+def counterexample_based_algorithm(automaton, nbr_objectives, colors_map):
     """
+    The algorithm is as presented in the pseudocode in the paper with the following notations: "A" is written
+    "pareto_optimal_payoffs".
     :param automaton: the automaton.
     :param nbr_objectives: the number t of objectives of Player 1.
     :param colors_map: maps each parity objective to the set of SPOT acceptance sets used to represent its priorities.
@@ -407,12 +413,7 @@ def counter_example_based_algorithm(automaton, nbr_objectives, colors_map):
 
         if a_counter_example_exists:
 
-            # the call to counter_example_exists modifies the acceptance condition of the automaton to check for a
-            # counter example (run losing for Player 0 with payoff not dominated by a payoff in pareto_optimal_payoffs).
-            # If such a counter example exists, it is an accepting run of this automaton and we retrieve its actual
-            # payoff.
-
-            counter_example_payoff = get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map,
+            counter_example_payoff = get_payoff_of_accepting_run(nbr_objectives, colors_map,
                                                                  accepting_run_counter_example)
 
             is_counter_example_dominated, accepting_run_dominating = counter_example_dominated(nbr_objectives,
@@ -421,12 +422,7 @@ def counter_example_based_algorithm(automaton, nbr_objectives, colors_map):
 
             if is_counter_example_dominated:
 
-                # the call to counter_example_dominated modifies the acceptance condition of the automaton to check
-                # whether the counter example payoff is dominated by some other payoff (winning for Player 0 and
-                # strictly larger than that of counter_example_payoff). If such a larger payoff exists, it is the payoff
-                # of an accepting run of this automaton and we retrieve its actual payoff.
-
-                dominating_payoff = get_payoff_of_accepting_run(nbr_objectives, automaton, colors_map,
+                dominating_payoff = get_payoff_of_accepting_run(nbr_objectives, colors_map,
                                                                 accepting_run_dominating)
 
                 # update the set of PO payoffs with this new payoff
@@ -442,4 +438,3 @@ def counter_example_based_algorithm(automaton, nbr_objectives, colors_map):
             # there are no counter examples, hence the instance is true
 
             return True
-
