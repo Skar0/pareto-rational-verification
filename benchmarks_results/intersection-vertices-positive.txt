@@ -1,0 +1,900 @@
+Variable value used 10000
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.03]
+CE times perf [0.03]
+CE times [0.03]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.02]
+AO call2 calls [2]
+AO call2 calls times [0.02]
+AO total nbr calls [10]
+AO times process [0.19]
+AO times perf [0.19]
+AO times [0.19]
+
+0.03, 0.03, 0.03
+0.19, 0.19, 0.19
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.02
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.02
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 9500
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.02]
+CE times perf [0.02]
+CE times [0.02]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.01]
+AO call2 calls [2]
+AO call2 calls times [0.01]
+AO total nbr calls [10]
+AO times process [0.13]
+AO times perf [0.13]
+AO times [0.13]
+
+0.02, 0.02, 0.02
+0.13, 0.13, 0.13
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.01
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.01
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 9000
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.02]
+CE times perf [0.02]
+CE times [0.02]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.01]
+AO call2 calls [2]
+AO call2 calls times [0.01]
+AO total nbr calls [10]
+AO times process [0.12]
+AO times perf [0.12]
+AO times [0.12]
+
+0.02, 0.02, 0.02
+0.12, 0.12, 0.12
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.01
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.01
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 8500
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.03]
+CE times perf [0.03]
+CE times [0.03]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.01]
+AO call2 calls [2]
+AO call2 calls times [0.01]
+AO total nbr calls [10]
+AO times process [0.12]
+AO times perf [0.12]
+AO times [0.12]
+
+0.03, 0.03, 0.03
+0.12, 0.12, 0.12
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.01
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.01
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 8000
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.02]
+CE times perf [0.02]
+CE times [0.02]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.01]
+AO call2 calls [2]
+AO call2 calls times [0.01]
+AO total nbr calls [10]
+AO times process [0.11]
+AO times perf [0.11]
+AO times [0.11]
+
+0.02, 0.02, 0.02
+0.11, 0.11, 0.11
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.01
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.01
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 7500
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.02]
+CE times perf [0.02]
+CE times [0.02]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.01]
+AO call2 calls [2]
+AO call2 calls times [0.01]
+AO total nbr calls [10]
+AO times process [0.1]
+AO times perf [0.1]
+AO times [0.1]
+
+0.02, 0.02, 0.02
+0.10, 0.10, 0.10
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.01
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.01
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 7000
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.02]
+CE times perf [0.02]
+CE times [0.02]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.01]
+AO call2 calls [2]
+AO call2 calls times [0.01]
+AO total nbr calls [10]
+AO times process [0.1]
+AO times perf [0.1]
+AO times [0.1]
+
+0.02, 0.02, 0.02
+0.10, 0.10, 0.10
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.01
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.01
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 6500
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.02]
+CE times perf [0.02]
+CE times [0.02]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.01]
+AO call2 calls [2]
+AO call2 calls times [0.01]
+AO total nbr calls [10]
+AO times process [0.09]
+AO times perf [0.09]
+AO times [0.09]
+
+0.02, 0.02, 0.02
+0.09, 0.09, 0.09
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.01
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.01
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 6000
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.02]
+CE times perf [0.02]
+CE times [0.02]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.01]
+AO call2 calls [2]
+AO call2 calls times [0.01]
+AO total nbr calls [10]
+AO times process [0.09]
+AO times perf [0.09]
+AO times [0.09]
+
+0.02, 0.02, 0.02
+0.09, 0.09, 0.09
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.01
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.01
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 5500
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.02]
+CE times perf [0.02]
+CE times [0.02]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.01]
+AO call2 calls [2]
+AO call2 calls times [0.01]
+AO total nbr calls [10]
+AO times process [0.07]
+AO times perf [0.07]
+AO times [0.07]
+
+0.02, 0.02, 0.02
+0.07, 0.07, 0.07
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.01
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.01
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 5000
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.01]
+CE times perf [0.01]
+CE times [0.01]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.01]
+AO call2 calls [2]
+AO call2 calls times [0.01]
+AO total nbr calls [10]
+AO times process [0.07]
+AO times perf [0.07]
+AO times [0.07]
+
+0.01, 0.01, 0.01
+0.07, 0.07, 0.07
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.01
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.01
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 4500
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.01]
+CE times perf [0.01]
+CE times [0.01]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.01]
+AO call2 calls [2]
+AO call2 calls times [0.01]
+AO total nbr calls [10]
+AO times process [0.06]
+AO times perf [0.06]
+AO times [0.06]
+
+0.01, 0.01, 0.01
+0.06, 0.06, 0.06
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.01
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.01
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 4000
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.01]
+CE times perf [0.01]
+CE times [0.01]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.01]
+AO call2 calls [2]
+AO call2 calls times [0.01]
+AO total nbr calls [10]
+AO times process [0.05]
+AO times perf [0.05]
+AO times [0.05]
+
+0.01, 0.01, 0.01
+0.05, 0.05, 0.05
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.01
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.01
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 3500
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.01]
+CE times perf [0.01]
+CE times [0.01]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.0]
+AO call2 calls [2]
+AO call2 calls times [0.01]
+AO total nbr calls [10]
+AO times process [0.05]
+AO times perf [0.05]
+AO times [0.05]
+
+0.01, 0.01, 0.01
+0.05, 0.05, 0.05
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.00
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.01
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 3000
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.01]
+CE times perf [0.01]
+CE times [0.01]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.0]
+AO call2 calls [2]
+AO call2 calls times [0.0]
+AO total nbr calls [10]
+AO times process [0.04]
+AO times perf [0.04]
+AO times [0.04]
+
+0.01, 0.01, 0.01
+0.04, 0.04, 0.04
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.00
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.00
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 2500
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.01]
+CE times perf [0.01]
+CE times [0.01]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.0]
+AO call2 calls [2]
+AO call2 calls times [0.0]
+AO total nbr calls [10]
+AO times process [0.03]
+AO times perf [0.03]
+AO times [0.03]
+
+0.01, 0.01, 0.01
+0.03, 0.03, 0.03
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.00
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.00
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 2000
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.01]
+CE times perf [0.01]
+CE times [0.01]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.0]
+AO call2 calls [2]
+AO call2 calls times [0.0]
+AO total nbr calls [10]
+AO times process [0.03]
+AO times perf [0.03]
+AO times [0.03]
+
+0.01, 0.01, 0.01
+0.03, 0.03, 0.03
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.00
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.00
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 1500
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.0]
+CE times perf [0.0]
+CE times [0.0]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.0]
+AO call2 calls [2]
+AO call2 calls times [0.0]
+AO total nbr calls [10]
+AO times process [0.02]
+AO times perf [0.02]
+AO times [0.02]
+
+0.00, 0.00, 0.00
+0.02, 0.02, 0.02
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.00
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.00
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 1000
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.0]
+CE times perf [0.0]
+CE times [0.0]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.0]
+AO call2 calls [2]
+AO call2 calls times [0.0]
+AO total nbr calls [10]
+AO times process [0.01]
+AO times perf [0.01]
+AO times [0.01]
+
+0.00, 0.00, 0.00
+0.01, 0.01, 0.01
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.00
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.00
+AO mean total nbr calls 10.00
+
+
+
+Variable value used 500
+Parameters [True]
+Number of objectives 4
+Antichain sizes [2]
+Number of payoffs losing [6]
+Number of payoffs realizable [10]
+CE antichain sizes [2]
+CE exists calls [6]
+CE exists calls times [0.0]
+CE dominated calls [5]
+CE dominated calls times [0.0]
+CE total nbr calls [11]
+CE times process [0.0]
+CE times perf [0.0]
+CE times [0.0]
+AO antichain sizes [2]
+AO call1 calls [8]
+AO call1 calls times [0.0]
+AO call2 calls [2]
+AO call2 calls times [0.0]
+AO total nbr calls [10]
+AO times process [0.01]
+AO times perf [0.01]
+AO times [0.01]
+
+0.00, 0.00, 0.00
+0.01, 0.01, 0.01
+Mean antichain size 2.00
+Mean number losing payoffs 6.00
+Mean number realizable payoffs 10.00
+CE mean antichain size 2.00
+CE mean nbr exists calls 6.00
+CE mean exists time 0.00
+CE mean nbr dominated calls 5.00
+CE mean dominated time 0.00
+CE mean total nbr calls 11.00
+AO mean antichain size 2.00
+AO mean nbr call1 calls 8.00
+AO mean call1 time 0.00
+AO mean nbr call2 calls 2.00
+AO mean call2 time 0.00
+AO mean total nbr calls 10.00
+
+
+
