@@ -1,5 +1,6 @@
 import statistics
 import time
+import ast
 from benchmarks import *
 from verification_algorithms import antichain_optimization_algorithm, counterexample_based_algorithm
 
@@ -120,16 +121,16 @@ def run_benchmark(benchmark_type, save_file, parameters, nbr_points, range_start
 
             temp_counterexample_antichain_sizes.append(stats[3])
             temp_counterexample_nbr_calls_exists.append(stats[4][0])
-            temp_counterexample_mean_time_calls_exists.append(float("%.2f" % statistics.mean(stats[4][1])))
+            temp_counterexample_mean_time_calls_exists.append(float("%.3f" % statistics.mean(stats[4][1])))
             temp_counterexample_nbr_calls_dominated.append(stats[5][0])
-            temp_counterexample_mean_time_calls_dominated.append(float("%.2f" % statistics.mean(stats[5][1])))
+            temp_counterexample_mean_time_calls_dominated.append(float("%.3f" % statistics.mean(stats[5][1])))
             temp_counterexample_nbr_calls.append(stats[4][0] + stats[5][0])
 
             temp_antichain_optimization_antichain_sizes.append(stats[6])
             temp_antichain_optimization_nbr_calls1.append(stats[7][0])
-            temp_antichain_optimization_mean_time_calls1.append(float("%.2f" % statistics.mean(stats[7][1])))
+            temp_antichain_optimization_mean_time_calls1.append(float("%.3f" % statistics.mean(stats[7][1])))
             temp_antichain_optimization_nbr_calls2.append(stats[8][0])
-            temp_antichain_optimization_mean_time_calls2.append(float("%.2f" % statistics.mean(stats[8][1])))
+            temp_antichain_optimization_mean_time_calls2.append(float("%.3f" % statistics.mean(stats[8][1])))
             temp_antichain_optimization_nbr_calls.append(stats[7][0] + stats[8][0])
 
             print(" ----- computing counterexample algorithm time -----")
@@ -146,9 +147,9 @@ def run_benchmark(benchmark_type, save_file, parameters, nbr_points, range_start
 
             assert positivity == gen_positivity
 
-            counterexample_times_process.append(float('%.2f' % (end_time_process - start_time_process)))
-            counterexample_times_perf_counter.append(float('%.2f' % (end_time_perf - start_time_perf)))
-            counterexample_times.append(float('%.2f' % (end - start)))
+            counterexample_times_process.append(float('%.3f' % (end_time_process - start_time_process)))
+            counterexample_times_perf_counter.append(float('%.3f' % (end_time_perf - start_time_perf)))
+            counterexample_times.append(float('%.3f' % (end - start)))
 
             print(" ----- computing antichain optimization time -----")
 
@@ -164,12 +165,12 @@ def run_benchmark(benchmark_type, save_file, parameters, nbr_points, range_start
 
             assert positivity == gen_positivity
 
-            antichain_optimization_times_process.append(float('%.2f' % (end_time_process - start_time_process)))
-            antichain_optimization_times_perf_counter.append(float('%.2f' % (end_time_perf - start_time_perf)))
-            antichain_optimization_times.append(float('%.2f' % (end - start)))
+            antichain_optimization_times_process.append(float('%.3f' % (end_time_process - start_time_process)))
+            antichain_optimization_times_perf_counter.append(float('%.3f' % (end_time_perf - start_time_perf)))
+            antichain_optimization_times.append(float('%.3f' % (end - start)))
 
             print("Antichain sizes " + str(temp_antichain_sizes))
-            print("Number of payoffs losing P0 " + str(temp_nbr_payoffs_losing_player_0))
+            print("Number of payoffs losing " + str(temp_nbr_payoffs_losing_player_0))
             print("Number of payoffs realizable " + str(temp_nbr_payoffs_realizable))
 
             print("CE antichain sizes " + str(temp_counterexample_antichain_sizes))
@@ -199,7 +200,7 @@ def run_benchmark(benchmark_type, save_file, parameters, nbr_points, range_start
         f.write("Number of objectives " + str(nbr) + "\n")
 
         f.write("Antichain sizes " + str(temp_antichain_sizes) + "\n")
-        f.write("Number of payoffs losing P0 " + str(temp_nbr_payoffs_losing_player_0) + "\n")
+        f.write("Number of payoffs losing " + str(temp_nbr_payoffs_losing_player_0) + "\n")
         f.write("Number of payoffs realizable " + str(temp_nbr_payoffs_realizable) + "\n")
 
         f.write("CE antichain sizes " + str(temp_counterexample_antichain_sizes) + "\n")
@@ -224,36 +225,34 @@ def run_benchmark(benchmark_type, save_file, parameters, nbr_points, range_start
         f.write("AO times perf " + str(antichain_optimization_times_perf_counter) + "\n")
         f.write("AO times " + str(antichain_optimization_times) + "\n")
 
-        f.write("\n")
+        f.write("Mean running time CE " + "%.3f" % statistics.mean(counterexample_times_process) + ", ")
+        f.write("%.3f" % statistics.mean(counterexample_times_perf_counter) + ", ")
+        f.write("%.3f" % statistics.mean(counterexample_times) + "\n")
 
-        f.write("%.2f" % statistics.mean(counterexample_times_process) + ", ")
-        f.write("%.2f" % statistics.mean(counterexample_times_perf_counter) + ", ")
-        f.write("%.2f" % statistics.mean(counterexample_times) + "\n")
+        f.write("Mean running time AO " + "%.3f" % statistics.mean(antichain_optimization_times_process) + ", ")
+        f.write("%.3f" % statistics.mean(antichain_optimization_times_perf_counter) + ", ")
+        f.write("%.3f" % statistics.mean(antichain_optimization_times) + "\n")
 
-        f.write("%.2f" % statistics.mean(antichain_optimization_times_process) + ", ")
-        f.write("%.2f" % statistics.mean(antichain_optimization_times_perf_counter) + ", ")
-        f.write("%.2f" % statistics.mean(antichain_optimization_times) + "\n")
+        f.write("Mean antichain size " + "%.3f" % statistics.mean(temp_antichain_sizes) + "\n")
+        f.write("Mean number losing payoffs " + "%.3f" % statistics.mean(temp_nbr_payoffs_losing_player_0) + "\n")
+        f.write("Mean number realizable payoffs " + "%.3f" % statistics.mean(temp_nbr_payoffs_realizable) + "\n")
 
-        f.write("Mean antichain size " + "%.2f" % statistics.mean(temp_antichain_sizes) + "\n")
-        f.write("Mean number losing payoffs " + "%.2f" % statistics.mean(temp_nbr_payoffs_losing_player_0) + "\n")
-        f.write("Mean number realizable payoffs " + "%.2f" % statistics.mean(temp_nbr_payoffs_realizable) + "\n")
-
-        f.write("CE mean antichain size " + "%.2f" % statistics.mean(temp_counterexample_antichain_sizes) + "\n")
-        f.write("CE mean nbr exists calls " + "%.2f" % statistics.mean(temp_counterexample_nbr_calls_exists) + "\n")
-        f.write("CE mean exists time " + "%.2f" % statistics.mean(temp_counterexample_mean_time_calls_exists) + "\n")
-        f.write("CE mean nbr dominated calls " + "%.2f" % statistics.mean(temp_counterexample_nbr_calls_dominated) +
+        f.write("CE mean antichain size " + "%.3f" % statistics.mean(temp_counterexample_antichain_sizes) + "\n")
+        f.write("CE mean nbr exists calls " + "%.3f" % statistics.mean(temp_counterexample_nbr_calls_exists) + "\n")
+        f.write("CE mean exists time " + "%.3f" % statistics.mean(temp_counterexample_mean_time_calls_exists) + "\n")
+        f.write("CE mean nbr dominated calls " + "%.3f" % statistics.mean(temp_counterexample_nbr_calls_dominated) +
                 "\n")
-        f.write("CE mean dominated time " + "%.2f" % statistics.mean(temp_counterexample_mean_time_calls_dominated) +
+        f.write("CE mean dominated time " + "%.3f" % statistics.mean(temp_counterexample_mean_time_calls_dominated) +
                 "\n")
-        f.write("CE mean total nbr calls " + "%.2f" % statistics.mean(temp_counterexample_nbr_calls) + "\n")
+        f.write("CE mean total nbr calls " + "%.3f" % statistics.mean(temp_counterexample_nbr_calls) + "\n")
 
-        f.write("AO mean antichain size " + "%.2f" % statistics.mean(temp_antichain_optimization_antichain_sizes) +
+        f.write("AO mean antichain size " + "%.3f" % statistics.mean(temp_antichain_optimization_antichain_sizes) +
                 "\n")
-        f.write("AO mean nbr call1 calls " + "%.2f" % statistics.mean(temp_antichain_optimization_nbr_calls1) + "\n")
-        f.write("AO mean call1 time " + "%.2f" % statistics.mean(temp_antichain_optimization_mean_time_calls1) + "\n")
-        f.write("AO mean nbr call2 calls " + "%.2f" % statistics.mean(temp_antichain_optimization_nbr_calls2) + "\n")
-        f.write("AO mean call2 time " + "%.2f" % statistics.mean(temp_antichain_optimization_mean_time_calls2) + "\n")
-        f.write("AO mean total nbr calls " + "%.2f" % statistics.mean(temp_antichain_optimization_nbr_calls) + "\n")
+        f.write("AO mean nbr call1 calls " + "%.3f" % statistics.mean(temp_antichain_optimization_nbr_calls1) + "\n")
+        f.write("AO mean call1 time " + "%.3f" % statistics.mean(temp_antichain_optimization_mean_time_calls1) + "\n")
+        f.write("AO mean nbr call2 calls " + "%.3f" % statistics.mean(temp_antichain_optimization_nbr_calls2) + "\n")
+        f.write("AO mean call2 time " + "%.3f" % statistics.mean(temp_antichain_optimization_mean_time_calls2) + "\n")
+        f.write("AO mean total nbr calls " + "%.3f" % statistics.mean(temp_antichain_optimization_nbr_calls) + "\n")
 
         f.write("\n")
         f.write("\n")
@@ -262,41 +261,139 @@ def run_benchmark(benchmark_type, save_file, parameters, nbr_points, range_start
         f.close()
 
 
+def get_counterexample_statistics(automaton, nbr_objectives, colors_map, save_file):
+    """
+    Get the evolution of the size of the antichain computed by the counterexample algorithm along with the running time
+    of each call trying to find a counterexample.
+    :param automaton: the automaton.
+    :param nbr_objectives: the number of objectives for Player 1.
+    :param colors_map: maps each parity objective to the set of SPOT acceptance sets used to represent its priorities.
+    :param save_file: file in which to save the results.
+    """
+    _, _, ce_exists_stats, _, antichain_evol = counterexample_based_statistics(automaton, nbr_objectives, colors_map)
+
+    f = open(save_file, "a")
+    f.write("Call times " + str(ce_exists_stats[1]) + "\n")
+    f.write("Antichain size " + str(antichain_evol) + "\n")
+    f.close()
+
+
+def parse_results(file_name, benchmark_type, nbr_points, save_file):
+    """
+
+    :param file_name:
+    :param benchmark_type:
+    :param nbr_points:
+    :param save_file:
+    :return:
+    """
+
+    x = []
+    y_ce = []
+    y_ao = []
+    mean_y_ce = []
+    mean_y_ao = []
+
+    with open(file_name, "r") as search:
+
+        for line in search:
+
+            line = line.rstrip().split(" ")
+
+            if len(line) == 4:
+
+                if line[0] == "Variable" and line[1] == "value" and line[2] == "used":
+                    current_x = int(line[3])
+                    for i in range(nbr_points):
+                        if benchmark_type == "intersection_vertices":
+                            x.append(1 + current_x * 22)
+                        if benchmark_type == "intersection_objectives":
+                            x.append(2 + current_x * 2)
+                        if benchmark_type == "random":
+                            x.append(current_x)
+
+                if line[0] == "CE" and line[1] == "times" and line[2] == "process":
+                    current_ce_times = ast.literal_eval(line[3])
+                    for i in range(nbr_points):
+                        y_ce.append(current_ce_times[i])
+
+                if line[0] == "AO" and line[1] == "times" and line[2] == "process":
+                    current_ao_times = ast.literal_eval(line[3])
+                    for i in range(nbr_points):
+                        y_ao.append(current_ao_times[i])
+
+                if benchmark_type == "random":
+                    if line[0] == "Mean" and line[1] == "running" and line[2] == "time" and line[3] == "CE":
+                        for i in range(nbr_points):
+                            mean_y_ce.append(float(line[4]))
+
+                    if line[0] == "Mean" and line[1] == "running" and line[2] == "time" and line[3] == "AO":
+                        for i in range(nbr_points):
+                            mean_y_ao.append(float(line[4]))
+
+    f = open(save_file, "a")
+    if benchmark_type == "intersection_vertices":
+        f.write("nbr_vertices CE_time AO_time\n")
+        for i in range(len(x)):
+            f.write(str(x[i]) + " " + str(y_ce[i]) + " " + str(y_ao[i]) + "\n")
+
+    if benchmark_type == "intersection_objectives":
+        f.write("nbr_objectives CE_time AO_time\n")
+        for i in range(len(x)):
+            f.write(str(x[i]) + " " + str(y_ce[i]) + " " + str(y_ao[i]) + "\n")
+
+    if benchmark_type == "random":
+        f.write("nbr_objectives CE_time AO_time mean_CE_time mean_AO_time\n")
+        for i in range(len(x)):
+            f.write(str(x[i]) + " " + str(y_ce[i]) + " " + str(y_ao[i]) + " " + str(mean_y_ce[i]) + " " +
+                    str(mean_y_ao[i]) + "\n")
+
+    f.close()
+
+
 run_benchmark("intersection_vertices",
               "benchmarks_results/intersection-vertices-positive.txt",
               [True],
-              50,
+              1,
               10000, 0, -500)
+
+parse_results("benchmarks_results/intersection-vertices-positive.txt",
+              "intersection_vertices",
+              1,
+              "benchmarks_results/intersection-vertices-positive.dat")
 
 run_benchmark("intersection_vertices",
               "benchmarks_results/intersection-vertices-negative.txt",
               [False],
-              50,
+              1,
               10000, 0, -500)
 
-run_benchmark("intersection_objectives",
-              "benchmarks_results/intersection-objectives-positive.txt",
-              [True],
-              50,
-              15, 0, -1)
-
-run_benchmark("intersection_objectives",
-              "benchmarks_results/intersection-objectives-negative.txt",
-              [False],
-              50,
-              15, 0, -1)
+parse_results("benchmarks_results/intersection-vertices-negative.txt",
+              "intersection_vertices",
+              1,
+              "benchmarks_results/intersection-vertices-negative.dat")
 
 run_benchmark("intersection_objectives",
               "benchmarks_results/intersection-objectives-positive.txt",
               [True],
-              50,
-              15, 0, -1)
+              1,
+              10, 0, -1)
+
+parse_results("benchmarks_results/intersection-objectives-positive.txt",
+              "intersection_objectives",
+              1,
+              "benchmarks_results/intersection-objectives-positive.dat")
 
 run_benchmark("intersection_objectives",
               "benchmarks_results/intersection-objectives-negative.txt",
               [False],
-              50,
-              15, 0, -1)
+              1,
+              10, 0, -1)
+
+parse_results("benchmarks_results/intersection-objectives-negative.txt",
+              "intersection_objectives",
+              1,
+              "benchmarks_results/intersection-objectives-negative.dat")
 
 run_benchmark("random",
               "benchmarks_results/random-positive.txt",
@@ -304,8 +401,19 @@ run_benchmark("random",
               50,
               15, 5, -1)
 
+parse_results("benchmarks_results/random-positive.txt",
+              "random",
+              1,
+              "benchmarks_results/random-positive.dat")
+
 run_benchmark("random",
               "benchmarks_results/random-negative.txt",
               [500, 0.2, 0.2, 0.3, False],
               50,
               15, 6, -1)
+
+parse_results("benchmarks_results/random-negative.txt",
+              "random",
+              1,
+              "benchmarks_results/random-negative.dat")
+
