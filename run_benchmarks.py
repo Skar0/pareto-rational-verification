@@ -300,12 +300,12 @@ run_benchmark("intersection_objectives",
 
 run_benchmark("random",
               "benchmarks_results/random-positive.txt",
-              [500, 0.2, 0.2, 0.3, True],
+              [500, 0.2, 0.2, 0.1, True],
               50,
-              15, 0, -1)
+              15, 5, -1)
 
 run_benchmark("random",
               "benchmarks_results/random-negative.txt",
               [500, 0.2, 0.2, 0.3, False],
               50,
-              15, 0, -1)
+              15, 6, -1)
