@@ -299,37 +299,37 @@ def parse_results(file_name, benchmark_type, nbr_points, save_file):
         for line in search:
 
             line = line.rstrip().split(" ")
+            if line[0] == "Variable" and line[1] == "value" and line[2] == "used":
+                current_x = int(line[3])
+                for i in range(nbr_points):
+                    if benchmark_type == "intersection_vertices":
+                        x.append(1 + current_x * 22)
+                    if benchmark_type == "intersection_objectives":
+                        x.append(2 + current_x * 2)
+                    if benchmark_type == "random":
+                        x.append(current_x)
 
-            if len(line) == 4:
+            if line[0] == "CE" and line[1] == "times" and line[2] == "process":
+                current_ce_times = ast.literal_eval(" ".join(line[3:]))
+                for i in range(nbr_points):
+                    y_ce.append(current_ce_times[i])
 
-                if line[0] == "Variable" and line[1] == "value" and line[2] == "used":
-                    current_x = int(line[3])
+            if line[0] == "AO" and line[1] == "times" and line[2] == "process":
+                current_ao_times = ast.literal_eval(" ".join(line[3:]))
+                for i in range(nbr_points):
+                    y_ao.append(current_ao_times[i])
+
+
+            if benchmark_type == "random":
+                if line[0] == "Mean" and line[1] == "running" and line[2] == "time" and line[3] == "CE":
+                    current_mean_y_ce = ast.literal_eval(" ".join(line[4:]))
                     for i in range(nbr_points):
-                        if benchmark_type == "intersection_vertices":
-                            x.append(1 + current_x * 22)
-                        if benchmark_type == "intersection_objectives":
-                            x.append(2 + current_x * 2)
-                        if benchmark_type == "random":
-                            x.append(current_x)
+                        mean_y_ce.append(float(current_mean_y_ce[0]))
 
-                if line[0] == "CE" and line[1] == "times" and line[2] == "process":
-                    current_ce_times = ast.literal_eval(line[3])
+                if line[0] == "Mean" and line[1] == "running" and line[2] == "time" and line[3] == "AO":
+                    current_mean_y_ao = ast.literal_eval(" ".join(line[4:]))
                     for i in range(nbr_points):
-                        y_ce.append(current_ce_times[i])
-
-                if line[0] == "AO" and line[1] == "times" and line[2] == "process":
-                    current_ao_times = ast.literal_eval(line[3])
-                    for i in range(nbr_points):
-                        y_ao.append(current_ao_times[i])
-
-                if benchmark_type == "random":
-                    if line[0] == "Mean" and line[1] == "running" and line[2] == "time" and line[3] == "CE":
-                        for i in range(nbr_points):
-                            mean_y_ce.append(float(line[4]))
-
-                    if line[0] == "Mean" and line[1] == "running" and line[2] == "time" and line[3] == "AO":
-                        for i in range(nbr_points):
-                            mean_y_ao.append(float(line[4]))
+                        mean_y_ao.append(float(current_mean_y_ao[0]))
 
     f = open(save_file, "a")
     if benchmark_type == "intersection_vertices":
