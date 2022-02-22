@@ -94,8 +94,8 @@ def counterexample_based_statistics(automaton, nbr_objectives, colors_map):
     :param nbr_objectives: the number t of objectives of Player 1.
     :param colors_map: maps each parity objective to the set of SPOT acceptance sets used to represent its priorities.
     :return: whether the PRV problem is satisfied, the approximation of the set of PO payoffs, a pair [number of calls,
-    list of running time] for the counter_example_exists function, and a similar pair for the counter_example_dominated
-    function.
+    list of running time] for the counter_example_exists function, a similar pair for the counter_example_dominated
+    function, and the evolution of the size of the antichain at each iteration.
     """
 
     pareto_optimal_payoffs = []
