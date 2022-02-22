@@ -1,8 +1,0 @@
-https://www.lrde.epita.fr/dload/spot/spot-2.10.3.tar.gz
-./configure --prefix ~/spot-2.10.2-install-64 --enable-max-accsets=64
-
-100 0.2 4 0.2 proba
-500 0.2 4 0.01 proba
-1000 0.2 4 0.01 proba antichain sizes seem less big, largest is 228
-1001 0.2 4 0.005 proba antichains seem smaller
-999 0.2 4 0.001 proba

@@ -52,7 +52,7 @@ def run_benchmark(benchmark_type, save_file, parameters, nbr_points, range_start
     times they were evaluated, for each set of parameter, and the mean value of those statistics and running times are
     also provided.
 
-    :param benchmark_type: should be in ["random", "intersection_vertices", "intersection_objectives"]
+    :param benchmark_type: should be in ["random", "intersection_vertices", "intersection_objectives"].
     :param save_file: path to file containing benchmarks results.
     :param parameters: parameters to generate the automata in the benchmarks (see above for expected format).
     :param nbr_points: number of times the algorithms are evaluated given a set of parameters.
@@ -280,12 +280,14 @@ def get_counterexample_statistics(automaton, nbr_objectives, colors_map, save_fi
 
 def parse_results(file_name, benchmark_type, nbr_points, save_file):
     """
-
-    :param file_name:
-    :param benchmark_type:
-    :param nbr_points:
-    :param save_file:
-    :return:
+    Parse the results contained in the file file_name (which is the output of run_benchmark) and creates a .dat file
+    save_file containing the running time of both algorithms for each value of the variable being tested and for each
+    of the nbr_points runs of the algorithms. In addition, when benchmark_type is "random", we also report the mean
+    running time of each algorithm on the nbr_points runs for each value of the variable.
+    :param file_name: file containing benchmarks data (output of run_benchmark).
+    :param benchmark_type: should be in ["random", "intersection_vertices", "intersection_objectives"].
+    :param nbr_points: number of times the algorithms are evaluated given a set of parameters.
+    :param save_file: path to .dat file containing results.
     """
 
     x = []
@@ -351,6 +353,70 @@ def parse_results(file_name, benchmark_type, nbr_points, save_file):
     f.close()
 
 
+def generate_tables(file_name):
+    """
+    Parse the results contained in the file file_name (which is the output of run_benchmark) and prints the latex table
+    containing the mean antichain size, mean antichain size approximation for the counterexample algorithm and mean
+    antichain size approximation for the antichain optimization algorithm as well as the ratio of lost payoffs.
+    :param file_name: file containing benchmarks data (output of run_benchmark).
+    """
+
+    mean_antichain_size = []
+    mean_number_losing_payoffs = []
+    mean_number_realizable_payoffs = []
+    ce_mean_antichain_size = []
+    ao_mean_antichain_size = []
+
+    dict_pattern = {
+        "Mean antichain size": mean_antichain_size,
+        "Mean number losing payoffs": mean_number_losing_payoffs,
+        "Mean number realizable payoffs": mean_number_realizable_payoffs,
+        "CE mean antichain size": ce_mean_antichain_size,
+        "AO mean antichain size": ao_mean_antichain_size
+    }
+
+    dict_pattern_names = {
+        "Mean antichain size": "$|\paretoSet{G}|$",
+        "CE mean antichain size": "$|A|$ in Algorithm \\ref{algo:fpt}",
+        "AO mean antichain size": "$|A|$ in Algorithm \\ref{algo:fpt-CE}"
+    }
+
+    for pattern in dict_pattern.keys():
+
+        with open(file_name, "r") as search:
+
+            for line in search:
+
+                line = line.rstrip().split(pattern)
+
+                if len(line) == 2:
+                    dict_pattern[pattern].append(line[1])
+
+        dict_pattern[pattern] = list(reversed(dict_pattern[pattern]))
+
+    nbr_elements = len(dict_pattern["Mean number realizable payoffs"])
+    print("t " + " & ", end=" ")
+    for i in range(nbr_elements - 1):
+        print(str(i + 1) + " & ", end=" ")
+    print(str(nbr_elements) + " \\\\")
+
+    for pattern in dict_pattern_names.keys():
+        print(dict_pattern_names[pattern] + " & ", end=" ")
+        current_list = dict_pattern[pattern]
+        nbr_elements = len(current_list)
+        for i in range(nbr_elements - 1):
+            print(current_list[i].strip() + " & ", end=" ")
+        print(current_list[nbr_elements - 1].strip() + " \\\\")
+
+    print("Ratio of lost payoffs" + " & ", end=" ")
+    nbr_elements = len(dict_pattern["Mean number realizable payoffs"])
+    for i in range(nbr_elements - 1):
+        print("%.3f" % (float(list(dict_pattern["Mean number losing payoffs"])[i]) / float(list(
+            dict_pattern["Mean number realizable payoffs"])[i])) + " & ", end=" ")
+    print("%.3f" % (float(list(dict_pattern["Mean number losing payoffs"])[nbr_elements - 1]) / float(list(
+        dict_pattern["Mean number realizable payoffs"])[nbr_elements - 1])) + " \\\\")
+
+
 run_benchmark("intersection_vertices",
               "benchmarks_results/intersection-vertices-positive.txt",
               [True],
@@ -403,7 +469,7 @@ run_benchmark("random",
 
 parse_results("benchmarks_results/random-positive.txt",
               "random",
-              1,
+              50,
               "benchmarks_results/random-positive.dat")
 
 run_benchmark("random",
@@ -414,6 +480,5 @@ run_benchmark("random",
 
 parse_results("benchmarks_results/random-negative.txt",
               "random",
-              1,
+              50,
               "benchmarks_results/random-negative.dat")
-
