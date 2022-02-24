@@ -421,7 +421,7 @@ run_benchmark("intersection_vertices",
               "benchmarks_results/intersection-vertices-positive.txt",
               [True],
               1,
-              10000, 0, -500)
+              100000, 0, -1000)
 
 parse_results("benchmarks_results/intersection-vertices-positive.txt",
               "intersection_vertices",
@@ -432,7 +432,7 @@ run_benchmark("intersection_vertices",
               "benchmarks_results/intersection-vertices-negative.txt",
               [False],
               1,
-              10000, 0, -500)
+              100000, 0, -1000)
 
 parse_results("benchmarks_results/intersection-vertices-negative.txt",
               "intersection_vertices",
@@ -474,7 +474,7 @@ parse_results("benchmarks_results/random-positive.txt",
 
 run_benchmark("random",
               "benchmarks_results/random-negative.txt",
-              [500, 0.2, 0.2, 0.3, False],
+              [500, 0.2, 0.1, 0.5, False],
               50,
               15, 6, -1)
 
