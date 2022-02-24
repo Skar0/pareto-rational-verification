@@ -305,7 +305,7 @@ def parse_results(file_name, benchmark_type, nbr_points, save_file):
                 current_x = int(line[3])
                 for i in range(nbr_points):
                     if benchmark_type == "intersection_vertices":
-                        x.append(1 + current_x * 22)
+                        x.append(current_x)
                     if benchmark_type == "intersection_objectives":
                         x.append(2 + current_x * 2)
                     if benchmark_type == "random":
