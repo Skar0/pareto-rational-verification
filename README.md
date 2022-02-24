@@ -19,5 +19,6 @@ We use [SPOT](https://spot.lrde.epita.fr)'s python bindings to manipulate automa
 Installing SPOT with those bindings is therefore required to run our code. The version of SPOT should be at least 2.10.3 (a bug present in the previous versions sometimes prevented our algorithms from terminating).
 In addition, SPOT should be installed with the `--enable-max-accsets=64` option in order to be able to run the benchmarks. The rest of the python code was written in python 3.8.
 
+From project root, run `tar -xf random_automata/random_automata_positive.tar.xz --directory random_automata/ --strip-components=1` and `tar -xf random_automata/random_automata_negative.tar.xz --directory random_automata/ --strip-components=1` to decompress the random automata already generated to reproduce the benchmarks.
 ## Citing
 If you use this software for your academic work, please cite the following paper on the PRV problem and related algorithms:
