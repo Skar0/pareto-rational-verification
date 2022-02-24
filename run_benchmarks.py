@@ -443,7 +443,7 @@ run_benchmark("intersection_objectives",
               "benchmarks_results/intersection-objectives-positive.txt",
               [True],
               1,
-              10, 0, -1)
+              10, 1, -1)
 
 parse_results("benchmarks_results/intersection-objectives-positive.txt",
               "intersection_objectives",
@@ -454,7 +454,7 @@ run_benchmark("intersection_objectives",
               "benchmarks_results/intersection-objectives-negative.txt",
               [False],
               1,
-              10, 0, -1)
+              10, 1, -1)
 
 parse_results("benchmarks_results/intersection-objectives-negative.txt",
               "intersection_objectives",
