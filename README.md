@@ -1,5 +1,5 @@
 # Pareto-Rational Verification
-Implementation of verification algorithms for the Pareto-Rational Verification problem (PRV problem). This python implementation uses [SPOT](https://spot.lrde.epita.fr) as a library to manipulate automata with general acceptance conditions. This code was implemented by Clément Tamines, University of Mons ([website](https://clement.tamin.es)).
+Implementation of verification algorithms for the Pareto-Rational Verification problem (PRV problem). This python implementation uses [SPOT](https://spot.lrde.epita.fr) as a library to manipulate automata with general acceptance conditions.
 
 ## Structure of the repository
 
