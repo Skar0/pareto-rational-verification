@@ -1,6 +1,7 @@
 import statistics
 import time
 import ast
+import spot
 from benchmarks import *
 from verification_algorithms import antichain_optimization_algorithm, counterexample_based_algorithm
 
@@ -261,20 +262,29 @@ def run_benchmark(benchmark_type, save_file, parameters, nbr_points, range_start
         f.close()
 
 
-def get_counterexample_statistics(automaton, nbr_objectives, colors_map, save_file):
+def get_counterexample_statistics(automaton_path, nbr_objectives, colors_map, save_file):
     """
     Get the evolution of the size of the antichain computed by the counterexample algorithm along with the running time
     of each call trying to find a counterexample.
-    :param automaton: the automaton.
+    :param automaton_path: path to the file containing the automaton.
     :param nbr_objectives: the number of objectives for Player 1.
     :param colors_map: maps each parity objective to the set of SPOT acceptance sets used to represent its priorities.
     :param save_file: file in which to save the results.
     """
+
+    automaton = None
+
+    # if the automaton has already been generated
+    if os.path.isfile(automaton_path):
+        for u in spot.automata(automaton_path):
+            automaton = u
+
     _, _, ce_exists_stats, _, antichain_evol = counterexample_based_statistics(automaton, nbr_objectives, colors_map)
 
     f = open(save_file, "a")
-    f.write("Call times " + str(ce_exists_stats[1]) + "\n")
-    f.write("Antichain size " + str(antichain_evol) + "\n")
+    f.write("iteration A_size call_time\n")
+    for i in range(len(antichain_evol)):
+        f.write(str(i) + " " + str(antichain_evol[i]) + " " + str("%.4f" % ce_exists_stats[1][i]) + "\n")
     f.close()
 
 
@@ -482,3 +492,23 @@ parse_results("benchmarks_results/random-negative.txt",
               "random",
               50,
               "benchmarks_results/random-negative.dat")
+
+colors_map = {0: [0, 1, 2, 3], 1: [4, 5, 6, 7], 2: [8, 9, 10, 11], 3: [12, 13, 14, 15],
+              4: [16, 17, 18, 19], 5: [20, 21, 22, 23], 6: [24, 25, 26, 27], 7: [28, 29, 30, 31],
+              8: [32, 33, 34, 35], 9: [36, 37, 38, 39], 10: [40, 41, 42, 43], 11: [44, 45, 46, 47],
+              12: [48, 49, 50, 51], 13: [52, 53, 54, 55], 14: [56, 57, 58, 59], 15: [60, 61, 62, 63]}
+
+get_counterexample_statistics("random_automata/random-500-0.2-15-0.2-0.1-True-11.hoa",
+                              15,
+                              colors_map,
+                              "benchmarks_results/CE_difficult_positive.dat")
+
+colors_map = {0: [0, 1, 2, 3], 1: [4, 5, 6, 7], 2: [8, 9, 10, 11], 3: [12, 13, 14, 15],
+              4: [16, 17, 18, 19], 5: [20, 21, 22, 23], 6: [24, 25, 26, 27], 7: [28, 29, 30, 31],
+              8: [32, 33, 34, 35], 9: [36, 37, 38, 39], 10: [40, 41, 42, 43], 11: [44, 45, 46, 47],
+              12: [48, 49, 50, 51], 13: [52, 53, 54, 55], 14: [56, 57, 58, 59]}
+
+get_counterexample_statistics("random_automata/random-500-0.2-14-0.1-0.5-False-27.hoa",
+                                    14,
+                                    colors_map,
+                                    "benchmarks_results/CE_difficult_negative.dat")
