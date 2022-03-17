@@ -311,9 +311,9 @@ def counter_example_dominated(nbr_objectives, automaton, colors_map, counter_exa
             disj_for_each_payoffs |= conj_of_sat_obj_in_payoff
 
     # notice that if there are no payoffs larger than the counter example payoff (as it only contains ones), we return
-    # false as it cannot be dominated.
+    # false as it cannot be dominated. There is no corresponding run.
     if disj_for_each_payoffs is None:
-        return False
+        return False, None
     # if the disjunction is not empty (at least one larger payoff exists), do a conjunction with acc
     else:
         acc &= disj_for_each_payoffs
